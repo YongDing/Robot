@@ -1,6 +1,11 @@
 package sample;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import robocode.*;
 import AI.Enemy;
@@ -19,14 +24,27 @@ public class Robotd extends AdvancedRobot {
 	 */
 	Enemy enemy = new Enemy();
 	public static double PI = Math.PI;
-
+	
+    public String readToBuffer(StringBuffer buffer, String filePath) throws IOException {
+        InputStream is = new FileInputStream(filePath);
+        String line; // 用来保存每行读取的内容
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        line = reader.readLine(); // 读取第一行
+        while (line != null) { // 如果 line 为空说明读完了
+            buffer.append(line); // 将读到的内容添加到 buffer 中
+            buffer.append("\n"); // 添加换行符
+            line = reader.readLine(); // 读取下一行
+        }
+        reader.close();
+        is.close();
+        return buffer.toString();
+    }
+    
 	public void run() {
 		// Initialization of the robot should be put here
 
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
-
-		// setColors(Color.red,Color.blue,Color.green); // body,gun,radar
 
 		// Robot main loop
 		setAdjustGunForRobotTurn(true);
@@ -37,9 +55,20 @@ public class Robotd extends AdvancedRobot {
 			// Replace the next 4 lines with any behavior you would like
 			if (enemy.name == null) {
 				setTurnRadarRightRadians(2 * PI);
+				
+				
+				this.setTurnRight(360);
+				//move
+				ahead(200);
+				
 				execute();
 			} else {
+				this.setTurnRight(360);
+				
+				//move
+				ahead(200);
 				execute();
+
 			}
 			
 			
@@ -55,7 +84,6 @@ public class Robotd extends AdvancedRobot {
 		enemy.update(e, this);
 		double Offset = rectify(enemy.direction - getRadarHeadingRadians());
 		setTurnRadarRightRadians(Offset * 1.1);
-		fire(3);
 	}
 
 	/**
@@ -71,7 +99,10 @@ public class Robotd extends AdvancedRobot {
 	 */
 	public void onHitWall(HitWallEvent e) {
 		// Replace the next line with any behavior you would like
-		// back(20);
+		
+		this.turnGunRight(100);
+		this.turnRight(180);
+		enemy.name=null;
 	}
 
 	public double rectify(double angle) {
