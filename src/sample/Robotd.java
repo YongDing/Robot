@@ -10,9 +10,6 @@ import java.io.InputStreamReader;
 import robocode.*;
 import AI.Enemy;
 
-//import java.awt.Color;
-
-// API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
 
 /**
  * Yong - a robot by (your name here)

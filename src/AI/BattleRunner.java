@@ -43,10 +43,10 @@ import sample.Robotd;
          engine.runBattle(battleSpec, true); // waits till the battle finishes
  
          // Cleanup our RobocodeEngine
-//         engine.close();
+         engine.close();
  
          // Make sure that the Java VM is shut down properly
-//         System.exit(0);
+         System.exit(0);
      }
  }
  
