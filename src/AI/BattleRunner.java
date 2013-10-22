@@ -11,14 +11,10 @@ public class BattleRunner {
  
      public static void main(String[] args) {
     	 Robotd robot = new Robotd(); 
-<<<<<<< Updated upstream
-    	 
- 
+
     	 BattleCompletedEvent result;
-    	 
-=======
+
     	 RobotLu robotlu = new RobotLu();
->>>>>>> Stashed changes
          // Disable log messages from Robocode
          RobocodeEngine.setLogMessagesEnabled(false);
          // Create the RobocodeEngine
