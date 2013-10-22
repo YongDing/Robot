@@ -55,13 +55,14 @@ public class Robotd extends AdvancedRobot {
 				
 				
 				this.setTurnRight(360);
+				this.setTurnGunLeft(360);
 				//move
 				ahead(200);
 				
 				execute();
 			} else {
 				this.setTurnRight(360);
-				
+				this.setTurnGunRight(360);
 				//move
 				ahead(200);
 				execute();

@@ -10,7 +10,14 @@ public class Network {
 	public Neuron n3;// Output nodes
 	public int target_output; // be used for calculating accuracy.
 
-	double input0, input1, input2, input3;
+	//input0 gun bearing
+	//input1 power of bullet
+	//input2 distance
+	//input3 heading
+	//input4 velocity
+	//input5 heading of enemy
+	//input6 velocity of enemy
+	double input0, input1, input2, input3, input4, input5, input6;
 
 	public Network() {
 		initialStructure();
@@ -21,11 +28,14 @@ public class Network {
 	}
 
 	public void setInputs(double input0, double input1, double input2,
-			double input3) {
+			double input3,double input4,double input5,double input6) {
 		this.input0 = input0;
 		this.input1 = input1;
 		this.input2 = input2;
 		this.input3 = input3;
+		this.input4 = input4;
+		this.input5 = input5;
+		this.input6 = input6;
 
 		initialInput();
 		initialValues();
@@ -60,6 +70,9 @@ public class Network {
 		n1[1].setValue(input1);
 		n1[2].setValue(input2);
 		n1[3].setValue(input3);
+		n1[4].setValue(input4);
+		n1[5].setValue(input5);
+		n1[6].setValue(input6);
 
 	}
 

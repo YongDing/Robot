@@ -57,7 +57,7 @@ public class Neuron {
 	}
 
 	public double getOutput() {
-		return Math.round(this.getNeuronOutput());
+		return this.getNeuronOutput()*2*Math.PI;
 	}
 
 }
