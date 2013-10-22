@@ -10,6 +10,9 @@ public class Network {
 	public Neuron[] bias; // bias nodes
 	public Neuron n3;// Output node, the degree should turn
 
+	public double[] w2;
+	public double[] biasw;
+	public double[] w3;
 
 	//input0 bearing of gun
 	//input1 power of bullet
@@ -31,14 +34,14 @@ public class Network {
 
 	public void setInputs(double input0, double input1, double input2,
 			double input3,double input4,double input5,double input6, double input7) {
-		this.input0 = input0;
-		this.input1 = input1;
-		this.input2 = input2;
-		this.input3 = input3;
-		this.input4 = input4;
-		this.input5 = input5;
-		this.input6 = input6;
-		this.input7 = input7;
+		this.input0 = (input0+Math.PI)/(Math.PI*2);
+		this.input1 = (input1-1)/2;
+		this.input2 = (input2-0)/1000;
+		this.input3 = input3/(Math.PI*2);
+		this.input4 = input4/8;
+		this.input5 = input5/(Math.PI*2);
+		this.input6 = input6/8;
+		this.input7 = input7+Math.PI/(Math.PI*2);
 		initialInput();
 		initialValues();
 	}
@@ -123,7 +126,7 @@ public class Network {
 			n2[i]=new Neuron();
 			for(int j=0;j<input_number;j++){
 				n2[i].connect(n1[j]);
-			}
+			}	
 			n2[i].connect(bias[i]);
 			n3.connect(n2[i]);
 		}
@@ -133,12 +136,8 @@ public class Network {
 
 	public double getOutput() {
 		this.initialValues();
-		return (n3.getNeuronOutput()-0.5)*2*Math.PI;
-	}
-
-	public int getFinalOutput() {
-		this.initialValues();
-		return (int) n3.getOutput();
+		double angle=n3.getNeuronOutput();
+		return angle;
 	}
 
 

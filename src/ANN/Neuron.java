@@ -43,7 +43,8 @@ public class Neuron {
 
 	public void connect(Neuron n) {
 		previous.add(n);
-		weights.add(Math.random());
+		int plus_mins=Math.random()>0.5?1:-1;
+		weights.add((Math.random()+0.1)*plus_mins);
 	}
 
 	public double getNeuronOutput() {
@@ -53,11 +54,7 @@ public class Neuron {
 			double weight = weights.get(i);
 			m += n.getValue() * weight;
 		}
-		return 1 / (1 + Math.exp(-m));
-	}
-
-	public double getOutput() {
-		return this.getNeuronOutput()*Math.PI;
+		return (1 / (1 + Math.exp(-m)));
 	}
 
 }
