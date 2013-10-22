@@ -32,47 +32,7 @@ public class Robotd extends AdvancedRobot {
 		this.network = network;
 	}
 
-	public String readToBuffer(StringBuffer buffer, String filePath)
-			throws IOException {
 
-		InputStream is = new FileInputStream(filePath);
-		String line;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		line = reader.readLine();
-		while (line != null) {
-			buffer.append(line);
-			buffer.append("\n");
-			line = reader.readLine();
-		}
-		reader.close();
-		is.close();
-		return buffer.toString();
-	}
-
-	public ArrayList<Float> readToFloat(StringBuffer buffer, String filePath)
-			throws IOException {
-		InputStream is = new FileInputStream(filePath);
-		ArrayList<Float> weights = new ArrayList<Float>();
-		String[] text = { "hidden0_weights", "hidden1_weights",
-				"hidden2_weights", "hidden3_weights", "hidden4_weights",
-				"output_weights" };
-		String line;
-		float f;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		line = reader.readLine();
-		while (line != null) {
-			if (!line.equals(text[0]) && !line.equals(text[1])
-					&& !line.equals(text[2]) && !line.equals(text[3])
-					&& !line.equals(text[4]) && !line.equals(text[5])) {
-				f = Float.parseFloat(line.toString());
-				weights.add(f);
-	            line = reader.readLine();
-			}
-		}
-		reader.close();
-		is.close();
-		return weights;
-	}
 
 	public void run() {
 		// Initialization of the robot should be put here

@@ -32,7 +32,7 @@ public class Network {
 	}
 
 	public Network(int hidden_number) {
-		initialStructure(7, hidden_number);
+		initialStructure(input_number, hidden_number);
 	}
 
 	public void setInputs(double input0, double input1, double input2,
@@ -154,28 +154,33 @@ public class Network {
 		n.setprevious(a);
 	}
 
-	public void updateWeight() {
-
-		for (int i = 0; i < hidden_number; i++) {
-
+	public void updateWeight() throws IOException {
+		ArrayList<Double> weights = new ArrayList<Double>();
+		ArrayList<Double> temp = new ArrayList<Double>();
+		weights = readToDouble("shoot_training");
+		if (weights.size() > 0) {
+			for (int i = 0; i < hidden_number; i++) {
+				temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
+				n2[i].setWeights(temp);	
+			}
 		}
 	}
 
-	public ArrayList<Float> readToFloat(String filePath) throws IOException {
+	public ArrayList<Double> readToDouble(String filePath) throws IOException {
 		InputStream is = new FileInputStream(filePath);
-		ArrayList<Float> weights = new ArrayList<Float>();
+		ArrayList<Double> weights = new ArrayList<Double>();
 		ArrayList<String> text = new ArrayList<String>();
 		for (int i = 0; i < hidden_number; i++) {
 			text.add("hidden_" + i + "_weights");
 		}
 		String line;
-		float f;
+		double d;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		line = reader.readLine();
 		while (line != null) {
 			if (!text.contains(line)) {
-				f = Float.parseFloat(line.toString());
-				weights.add(f);
+				d = Double.parseDouble(line.toString());
+				weights.add(d);
 				line = reader.readLine();
 			}
 		}
@@ -188,5 +193,22 @@ public class Network {
 		FileWriter fw = new FileWriter(filePath);
 		fw.write(content);
 		fw.close();
+	}
+	
+	public String readToBuffer(StringBuffer buffer, String filePath)
+			throws IOException {
+
+		InputStream is = new FileInputStream(filePath);
+		String line;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		line = reader.readLine();
+		while (line != null) {
+			buffer.append(line);
+			buffer.append("\n");
+			line = reader.readLine();
+		}
+		reader.close();
+		is.close();
+		return buffer.toString();
 	}
 }
