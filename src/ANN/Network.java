@@ -3,16 +3,13 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-	final int input_number=8,hidden_number=5;
+	final int input_number=8,hidden_number=10;
 	
 	public Neuron[] n1;// Input nodes
 	public Neuron[] n2;// Hidden nodes
 	public Neuron[] bias; // bias nodes
 	public Neuron n3;// Output node, the degree should turn
 
-	public double[] w2;
-	public double[] biasw;
-	public double[] w3;
 
 	//input0 bearing of gun
 	//input1 power of bullet
@@ -136,7 +133,7 @@ public class Network {
 
 	public double getOutput() {
 		this.initialValues();
-		double angle=n3.getNeuronOutput();
+		double angle=(n3.getNeuronOutput()-0.5)*2*Math.PI;
 		return angle;
 	}
 
