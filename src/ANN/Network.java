@@ -197,7 +197,6 @@ public class Network {
 	
 	public String readToBuffer(StringBuffer buffer, String filePath)
 			throws IOException {
-
 		InputStream is = new FileInputStream(filePath);
 		String line;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -211,4 +210,6 @@ public class Network {
 		is.close();
 		return buffer.toString();
 	}
+	
+	
 }

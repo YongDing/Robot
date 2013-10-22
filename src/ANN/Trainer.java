@@ -62,7 +62,7 @@ public class Trainer {
         // Make sure that the Java VM is shut down properly
         System.exit(0);
 	}
-	public void train(double x0, double x1, double x2,double x3,double x4,double x5,double x6,double x7) {
+	public void train() {
 		
 	}	
 	
