@@ -1,36 +1,26 @@
 package AI;
 import java.awt.Robot;
 import java.io.File;
-
 import robocode.*;
 import robocode.control.*;
 import robocode.control.events.*;
 import sample.Robotd;
  
- //
- // Application that demonstrates how to run two sample robots in Robocode using the
- // RobocodeEngine from the robocode.control package.
- //
- // @author Flemming N. Larsen
- //
- public class BattleRunner {
+public class BattleRunner {
  
      public static void main(String[] args) {
-    	 Robotd robot = new Robotd();
- 
+    	 Robotd robot = new Robotd(); 
          // Disable log messages from Robocode
          RobocodeEngine.setLogMessagesEnabled(false);
-
          // Create the RobocodeEngine
          //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-//         RobocodeEngine engine = new RobocodeEngine(new File("C:\\robocode"));
-         RobocodeEngine engine = new RobocodeEngine(new File("/Users/xiaoyilu/robocode"));
+         RobocodeEngine engine = new RobocodeEngine(new File("C:\\robocode"));
+         // RobocodeEngine engine = new RobocodeEngine(new File("/Users/xiaoyilu/robocode"));
          // Add our own battle listener to the RobocodeEngine 
          engine.addBattleListener(new BattleObserver());
  
          // Show the Robocode battle view
          engine.setVisible(true);
- 
          // Setup the battle specification
  
          int numberOfRounds = 5;
