@@ -31,14 +31,16 @@ public class Network {
 
 	public void setInputs(double input0, double input1, double input2,
 			double input3,double input4,double input5,double input6, double input7) {
+		
+		//normalize input (x-min)/(max-min)
 		this.input0 = (input0+Math.PI)/(Math.PI*2);
 		this.input1 = (input1-1)/2;
 		this.input2 = (input2-0)/1000;
 		this.input3 = input3/(Math.PI*2);
-		this.input4 = input4/8;
+		this.input4 = (input4+8)/16;
 		this.input5 = input5/(Math.PI*2);
-		this.input6 = input6/8;
-		this.input7 = input7+Math.PI/(Math.PI*2);
+		this.input6 = (input6+8)/16;
+		this.input7 = (input7+Math.PI)/(Math.PI*2);
 		initialInput();
 		initialValues();
 	}

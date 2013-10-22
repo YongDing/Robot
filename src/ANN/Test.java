@@ -14,8 +14,9 @@ public class Test {
 		//input7 bearing of enemy
 		
 		double input0, input1, input2, input3, input4, input5, input6, input7;
-		while(true){
 		Network network=new Network();
+		while(true){
+		
 		input0=(Math.random())*Math.PI;
 		input1=(Math.random())*3;
 		input2=(Math.random())*1000;
