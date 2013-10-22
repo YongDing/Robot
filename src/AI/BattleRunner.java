@@ -10,6 +10,9 @@ public class BattleRunner {
  
      public static void main(String[] args) {
     	 Robotd robot = new Robotd(); 
+    	 
+    	 BattleCompletedEvent result;
+    	 
          // Disable log messages from Robocode
          RobocodeEngine.setLogMessagesEnabled(false);
          // Create the RobocodeEngine
@@ -17,8 +20,9 @@ public class BattleRunner {
          RobocodeEngine engine = new RobocodeEngine(new File("C:\\robocode"));
          // RobocodeEngine engine = new RobocodeEngine(new File("/Users/xiaoyilu/robocode"));
          // Add our own battle listener to the RobocodeEngine 
-         engine.addBattleListener(new BattleObserver());
- 
+         BattleObserver obsever=new BattleObserver(); 
+         engine.addBattleListener(obsever);
+
          // Show the Robocode battle view
          engine.setVisible(true);
          // Setup the battle specification
@@ -31,7 +35,10 @@ public class BattleRunner {
 
          // Run our specified battle and let it run till it is over
          engine.runBattle(battleSpec, true); // waits till the battle finishes
- 
+         result=obsever.getResult();
+
+         
+         engine.runBattle(battleSpec, true); // waits till the battle finishes
          // Cleanup our RobocodeEngine
          engine.close();
  
@@ -44,11 +51,20 @@ public class BattleRunner {
  // Our private battle listener for handling the battle event we are interested in.
  //
  class BattleObserver extends BattleAdaptor {
- 
-     // Called when the battle is completed successfully with battle results
+	 BattleCompletedEvent result;
+	 
+     public BattleCompletedEvent getResult() {
+		return result;
+	}
+
+	public void setResult(BattleCompletedEvent result) {
+		this.result = result;
+	}
+
+	// Called when the battle is completed successfully with battle results
      public void onBattleCompleted(BattleCompletedEvent e) {
+    	 result=e;
          System.out.println("-- Battle has completed --");
-         
          // Print out the sorted results with the robot names
          System.out.println("Battle results:");
          for (robocode.BattleResults result : e.getSortedResults()) {

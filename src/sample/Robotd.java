@@ -6,10 +6,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import robocode.*;
 import AI.Enemy;
-
+import ANN.Network;
 
 /**
  * Yong - a robot by (your name here)
@@ -21,22 +22,50 @@ public class Robotd extends AdvancedRobot {
 	 */
 	Enemy enemy = new Enemy();
 	public static double PI = Math.PI;
-	
-    public String readToBuffer(StringBuffer buffer, String filePath) throws IOException {
-        InputStream is = new FileInputStream(filePath);
-        String line;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        line = reader.readLine();
-        while (line != null) {
-            buffer.append(line); 
-            buffer.append("\n"); 
-            line = reader.readLine(); 
-        }
-        reader.close();
-        is.close();
-        return buffer.toString();
-    }
-    
+	Network network = new Network();
+
+	public String readToBuffer(StringBuffer buffer, String filePath)
+			throws IOException {
+
+		InputStream is = new FileInputStream(filePath);
+		String line;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		line = reader.readLine();
+		while (line != null) {
+			buffer.append(line);
+			buffer.append("\n");
+			line = reader.readLine();
+		}
+		reader.close();
+		is.close();
+		return buffer.toString();
+	}
+
+	public ArrayList<Float> readToFloat(StringBuffer buffer, String filePath)
+			throws IOException {
+		InputStream is = new FileInputStream(filePath);
+		ArrayList<Float> weights = new ArrayList<Float>();
+		String[] text = { "hidden0_weights", "hidden1_weights",
+				"hidden2_weights", "hidden3_weights", "hidden4_weights",
+				"output_weights" };
+		String line;
+		float f;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		line = reader.readLine();
+		while (line != null) {
+			if (!line.equals(text[0]) && !line.equals(text[1])
+					&& !line.equals(text[2]) && !line.equals(text[3])
+					&& !line.equals(text[4]) && !line.equals(text[5])) {
+				f = Float.parseFloat(line.toString());
+				weights.add(f);
+	            line = reader.readLine();
+			}
+		}
+		reader.close();
+		is.close();
+		return weights;
+	}
+
 	public void run() {
 		// Initialization of the robot should be put here
 
@@ -52,23 +81,21 @@ public class Robotd extends AdvancedRobot {
 			// Replace the next 4 lines with any behavior you would like
 			if (enemy.name == null) {
 				setTurnRadarRightRadians(2 * PI);
-				
+
 				this.setTurnRight(360);
 				this.setTurnGunLeft(360);
-				//move
+				// move
 				ahead(200);
-				
+
 				execute();
 			} else {
 				this.setTurnRight(360);
 				this.setTurnGunRight(360);
-				//move
+				// move
 				ahead(200);
 				execute();
 
 			}
-			
-			
 
 		}
 	}
@@ -89,17 +116,17 @@ public class Robotd extends AdvancedRobot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// Replace the next line with any behavior you would like
 		// back(10);
-	}	
+	}
 
 	/**
 	 * onHitWall: What to do when you hit a wall
 	 */
 	public void onHitWall(HitWallEvent e) {
 		// Replace the next line with any behavior you would like
-		
+
 		this.turnGunRight(100);
 		this.turnRight(180);
-		enemy.name=null;
+		enemy.name = null;
 	}
 
 	public double rectify(double angle) {

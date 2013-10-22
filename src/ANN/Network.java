@@ -68,6 +68,7 @@ public class Network {
 		n1[4].setValue(input4);
 		n1[5].setValue(input5);
 		n1[6].setValue(input6);
+		n1[7].setValue(input7);
 
 	}
 
@@ -149,6 +150,12 @@ public class Network {
 	public void cancelConnect(Neuron n) {
 		ArrayList<Neuron> a = new ArrayList<Neuron>();
 		n.setprevious(a);
+	}
+	
+	public void updateWeight(){
+		for(int i=0;i<hidden_number;i++){
+
+		}
 	}
 
 }

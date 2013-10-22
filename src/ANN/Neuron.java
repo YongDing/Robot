@@ -9,8 +9,8 @@ public class Neuron {
 	private ArrayList<Double> weights;
 
 	public Neuron() {
-		previous = new ArrayList();
-		weights = new ArrayList();
+		previous = new ArrayList<Neuron>();
+		weights = new ArrayList<Double>();
 	}
 
 	public double getValue() {
