@@ -151,6 +151,7 @@ public class Network {
 	}
 	
 	public void updateWeight(){
+		
 		for(int i=0;i<hidden_number;i++){
 
 		}
