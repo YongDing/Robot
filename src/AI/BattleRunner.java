@@ -46,39 +46,4 @@ public class BattleRunner {
          System.exit(0);
      }
  }
- 
- //
- // Our private battle listener for handling the battle event we are interested in.
- //
- class BattleObserver extends BattleAdaptor {
-	 BattleCompletedEvent result;
-	 
-     public BattleCompletedEvent getResult() {
-		return result;
-	}
 
-	public void setResult(BattleCompletedEvent result) {
-		this.result = result;
-	}
-
-	// Called when the battle is completed successfully with battle results
-     public void onBattleCompleted(BattleCompletedEvent e) {
-    	 result=e;
-         System.out.println("-- Battle has completed --");
-         // Print out the sorted results with the robot names
-         System.out.println("Battle results:");
-         for (robocode.BattleResults result : e.getSortedResults()) {
-             System.out.println("  " + result.getTeamLeaderName() + ": " + result.getScore());
-         }
-     }
- 
-     // Called when the game sends out an information message during the battle
-     public void onBattleMessage(BattleMessageEvent e) {
-         System.out.println("Msg> " + e.getMessage());
-     }
- 
-     // Called when the game sends out an error message during the battle
-     public void onBattleError(BattleErrorEvent e) {
-         System.out.println("Err> " + e.getError());
-     }
- }
