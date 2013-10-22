@@ -4,6 +4,8 @@ import java.io.File;
 import robocode.*;
 import robocode.control.*;
 import robocode.control.events.*;
+import sample.AntiGravityRobot;
+import sample.DodgeRobot;
 import sample.RobotLu;
 import sample.Robotd;
  
@@ -13,8 +15,10 @@ public class BattleRunner {
     	 Robotd robot = new Robotd(); 
 
     	 BattleCompletedEvent result;
-
+ 
     	 RobotLu robotlu = new RobotLu();
+    	 DodgeRobot dodgeRobot = new DodgeRobot();
+    	 AntiGravityRobot antiGravityRobot = new AntiGravityRobot();
          // Disable log messages from Robocode
          RobocodeEngine.setLogMessagesEnabled(false);
          // Create the RobocodeEngine
@@ -32,8 +36,10 @@ public class BattleRunner {
          int numberOfRounds = 50;
          BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
 //         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.Robotd, sample.Crazy");
-         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.RobotLu, sample.Crazy");
- 
+//         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.RobotLu, sample.Crazy");
+//         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.DodgeRobot, sample.Crazy");
+         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.AntiGravityRobot, sample.Crazy");
+         
          BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
 
          // Run our specified battle and let it run till it is over

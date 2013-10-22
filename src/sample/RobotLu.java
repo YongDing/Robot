@@ -6,13 +6,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.jar.Attributes.Name;
 
 import robocode.*;
 import AI.Enemy;
 
 
 public class RobotLu extends AdvancedRobot {
-	private byte moveDirection = 1;
+	private int moveDirection = 1;
+	
+	private int wallMargin = 60; 
+	private int tooCloseToWall = 0;
 	
 	Enemy enemy = new Enemy();
 	public static double PI = Math.PI;
@@ -31,7 +35,7 @@ public class RobotLu extends AdvancedRobot {
         is.close();
         return buffer.toString();
     }
-    
+ 
 	public void run() {
 		// Initialization of the robot should be put here
 
@@ -41,6 +45,22 @@ public class RobotLu extends AdvancedRobot {
 		// Robot main loop
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
+		
+		addCustomEvent(new Condition("too_close_to_walls") {
+			public boolean test() {
+				return (
+					// we're too close to the left wall
+					(getX() <= wallMargin ||
+					 // or we're too close to the right wall
+					 getX() >= getBattleFieldWidth() - wallMargin ||
+					 // or we're too close to the bottom wall
+					 getY() <= wallMargin ||
+					 // or we're too close to the top wall
+					 getY() >= getBattleFieldHeight() - wallMargin)
+					);
+				}
+			});
+		
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
 		while (true) {
@@ -58,8 +78,6 @@ public class RobotLu extends AdvancedRobot {
 				execute();
 
 			}
-			
-			
 
 		}
 	}
@@ -74,7 +92,9 @@ public class RobotLu extends AdvancedRobot {
 		enemy.update(e, this);
 		double Offset = rectify(enemy.direction - getRadarHeadingRadians());
 		setTurnRadarRightRadians(Offset * 1.1);
-		doCirclingMove(e);
+//		doCirclingMove(e);
+		doStrafingMove(e);
+//		doWallAvoidMove(e);
 	}
 
 	/**
@@ -130,9 +150,32 @@ public class RobotLu extends AdvancedRobot {
 			moveDirection *= -1;
 
 		// circle our enemy
-		setTurnRight(enemy.getBearing() + 90);
-		setAhead(1000 * moveDirection);
+		setTurnRight(enemy.getBearing() + 90 - (10 * moveDirection));
+		setAhead(100 * moveDirection);
 	}
+	
+	public void onCustomEvent(CustomEvent e) {
+		if (e.getCondition().getName().equals("too_close_to_walls"))
+		{
+			moveDirection *= -1;
+			setAhead(150 * moveDirection);
+		}
+	}
+	
+	// Don't get too close to the walls
 
+	public void doWallAvoidMove(ScannedRobotEvent enemy) {
+		// always square off against our enemy, turning slightly toward him
+		setTurnRight(enemy.getBearing() + 90 - (10 * moveDirection));
+
+		// if we're close to the wall, eventually, we'll move away
+		if (tooCloseToWall > 0) tooCloseToWall--;
+
+		// normal movement: switch directions if we've stopped
+		if (getVelocity() == 0) {
+			moveDirection *= -1;
+			setAhead(1000 * moveDirection);
+		}
+	}
 
 }
