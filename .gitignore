@@ -1,3 +1,6 @@
 .DS_Store
 .classpath
 *.orig
+src/AI/BattleRunner.java
+bin/AI/BattleRunner.class
+*.un~
