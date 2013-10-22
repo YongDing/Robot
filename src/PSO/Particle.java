@@ -11,7 +11,6 @@ public class Particle {
 	}
 	public Particle(double[] position){
 		this.position=position;
-		
 	}
 	
 }
