@@ -5,7 +5,7 @@ import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.BattleMessageEvent;
 
-class BattleObserver extends BattleAdaptor {
+public class BattleObserver extends BattleAdaptor {
 	 BattleCompletedEvent result;
 	 
     public BattleCompletedEvent getResult() {

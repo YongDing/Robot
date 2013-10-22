@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-	final int input_number=7,hidden_number=5;
+	final int input_number=8,hidden_number=5;
 	
 	public Neuron[] n1;// Input nodes
 	public Neuron[] n2;// Hidden nodes
@@ -39,7 +39,6 @@ public class Network {
 		this.input5 = input5;
 		this.input6 = input6;
 		this.input7 = input7;
-		
 		initialInput();
 		initialValues();
 	}
@@ -134,7 +133,7 @@ public class Network {
 
 	public double getOutput() {
 		this.initialValues();
-		return n3.getNeuronOutput();
+		return (n3.getNeuronOutput()-0.5)*2*Math.PI;
 	}
 
 	public int getFinalOutput() {

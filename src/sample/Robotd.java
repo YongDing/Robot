@@ -24,6 +24,14 @@ public class Robotd extends AdvancedRobot {
 	public static double PI = Math.PI;
 	Network network = new Network();
 
+	public Network getNetwork() {
+		return network;
+	}
+
+	public void setNetwork(Network network) {
+		this.network = network;
+	}
+
 	public String readToBuffer(StringBuffer buffer, String filePath)
 			throws IOException {
 
@@ -81,18 +89,18 @@ public class Robotd extends AdvancedRobot {
 			// Replace the next 4 lines with any behavior you would like
 			if (enemy.name == null) {
 				setTurnRadarRightRadians(2 * PI);
-
 				this.setTurnRight(360);
-				this.setTurnGunLeft(360);
+				
 				// move
 				ahead(200);
-
 				execute();
 			} else {
 				this.setTurnRight(360);
-				this.setTurnGunRight(360);
 				// move
 				ahead(200);
+				
+//				fire(1);
+				shoot();
 				execute();
 
 			}
@@ -108,7 +116,12 @@ public class Robotd extends AdvancedRobot {
 		enemy.update(e, this);
 		double Offset = rectify(enemy.direction - getRadarHeadingRadians());
 		setTurnRadarRightRadians(Offset * 1.1);
+		
+		
+//		shoot();
 	}
+	
+
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
@@ -123,8 +136,6 @@ public class Robotd extends AdvancedRobot {
 	 */
 	public void onHitWall(HitWallEvent e) {
 		// Replace the next line with any behavior you would like
-
-		this.turnGunRight(100);
 		this.turnRight(180);
 		enemy.name = null;
 	}
@@ -135,5 +146,30 @@ public class Robotd extends AdvancedRobot {
 		if (angle > Math.PI)
 			angle -= 2 * Math.PI;
 		return angle;
+	}
+	
+	public void shoot(){
+		//input0 bearing of gun
+		//input1 power of bullet
+		//input2 distance
+		//input3 heading
+		//input4 velocity
+		//input5 heading of enemy
+		//input6 velocity of enemy
+		//input7 bearing of enemy
+		double input0, input1, input2, input3, input4, input5, input6, input7;
+		input0= getGunHeadingRadians();
+		input1=2;
+		input2=enemy.distance;
+		input3=getHeadingRadians();
+		input4=getVelocity();
+		input5=enemy.headingRadian;
+		input6=enemy.velocity;
+		input7=enemy.bearingRadian;
+
+		network.setInputs(input0, input1, input2, input3, input4, input5, input6, input7);
+		double trunradians=network.getOutput();
+		this.turnGunRightRadians(trunradians);
+		this.fire(2);
 	}
 }

@@ -11,6 +11,7 @@ public class BattleRunner {
      public static void main(String[] args) {
     	 Robotd robot = new Robotd(); 
     	 
+ 
     	 BattleCompletedEvent result;
     	 
          // Disable log messages from Robocode
@@ -38,7 +39,7 @@ public class BattleRunner {
          result=obsever.getResult();
 
          
-         engine.runBattle(battleSpec, true); // waits till the battle finishes
+//         engine.runBattle(battleSpec, true); // waits till the battle finishes
          // Cleanup our RobocodeEngine
          engine.close();
  
