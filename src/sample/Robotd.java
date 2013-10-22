@@ -53,7 +53,6 @@ public class Robotd extends AdvancedRobot {
 			if (enemy.name == null) {
 				setTurnRadarRightRadians(2 * PI);
 				
-				
 				this.setTurnRight(360);
 				this.setTurnGunLeft(360);
 				//move
@@ -90,7 +89,7 @@ public class Robotd extends AdvancedRobot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// Replace the next line with any behavior you would like
 		// back(10);
-	}
+	}	
 
 	/**
 	 * onHitWall: What to do when you hit a wall

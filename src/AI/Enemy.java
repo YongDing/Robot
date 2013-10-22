@@ -18,9 +18,9 @@ public class Enemy {
 		name = e.getName();
 		headingRadian = e.getHeadingRadians();
 		bearingRadian = e.getBearingRadians();
-		this.energy = e.getEnergy();
-		this.velocity = e.getVelocity();
-		this.distance = e.getDistance();
+		energy = e.getEnergy();
+		velocity = e.getVelocity();
+		distance = e.getDistance();
 		direction = bearingRadian + me.getHeadingRadians();
 		x = me.getX() + Math.sin(direction) * distance;
 		y = me.getY() + Math.cos(direction) * distance;

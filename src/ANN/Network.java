@@ -3,32 +3,34 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-
+	final int input_number=7,hidden_number=5;
+	
 	public Neuron[] n1;// Input nodes
 	public Neuron[] n2;// Hidden nodes
 	public Neuron[] bias; // bias nodes
-	public Neuron n3;// Output nodes
-	public int target_output; // be used for calculating accuracy.
+	public Neuron n3;// Output node, the degree should turn
 
-	//input0 gun bearing
+
+	//input0 bearing of gun
 	//input1 power of bullet
 	//input2 distance
 	//input3 heading
 	//input4 velocity
 	//input5 heading of enemy
 	//input6 velocity of enemy
-	double input0, input1, input2, input3, input4, input5, input6;
-
+	//input7 bearing of enemy
+	double input0, input1, input2, input3, input4, input5, input6, input7;
+	
 	public Network() {
 		initialStructure();
 	}
 	
-	public Network(int input_number, int hidden_number) {
-		initialStructure(input_number,hidden_number);
+	public Network(int hidden_number) {
+		initialStructure(7,hidden_number);
 	}
 
 	public void setInputs(double input0, double input1, double input2,
-			double input3,double input4,double input5,double input6) {
+			double input3,double input4,double input5,double input6, double input7) {
 		this.input0 = input0;
 		this.input1 = input1;
 		this.input2 = input2;
@@ -36,7 +38,8 @@ public class Network {
 		this.input4 = input4;
 		this.input5 = input5;
 		this.input6 = input6;
-
+		this.input7 = input7;
+		
 		initialInput();
 		initialValues();
 	}
@@ -55,14 +58,6 @@ public class Network {
 
 	public Neuron getOutputNeuron() {
 		return n3;
-	}
-
-	public int getTarget_output() {
-		return target_output;
-	}
-
-	public void setTarget_output(int target_output) {
-		this.target_output = target_output;
 	}
 
 	public void initialInput() {
@@ -88,7 +83,7 @@ public class Network {
 	}
 
 	public void initialStructure() {
-		int input_number=4,hidden_number=3;
+
 		n1 = new Neuron[input_number]; // Input nodes
 		n2 = new Neuron[hidden_number]; // Hidden nodes
 		bias = new Neuron[hidden_number+1]; // bias nodes
@@ -115,6 +110,7 @@ public class Network {
 		n1 = new Neuron[input_number]; // Input nodes
 		n2 = new Neuron[hidden_number]; // Hidden nodes
 		bias = new Neuron[hidden_number+1]; // bias nodes
+		
 		n3 = new Neuron();
 		
 		for(int i=0;i<input_number;i++){
@@ -145,12 +141,6 @@ public class Network {
 		return (int) n3.getOutput();
 	}
 
-	public boolean correct(int value) {
-		if (value == target_output) {
-			return true;
-		} else
-			return false;
-	}
 
 	public void AddConnect(Neuron n1, Neuron n2) {
 		n1.connect(n2);
