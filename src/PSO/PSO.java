@@ -1,6 +1,7 @@
 package PSO;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import robocode.control.BattleSpecification;
@@ -13,7 +14,7 @@ import ANN.Network;
 
 public class PSO {
 	int swarm_size, dimension;
-	int generations=2;
+	int generations=200;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -49,6 +50,12 @@ public class PSO {
 		this.w = w;
 		this.c1 = c1;
 		this.c2 = c2;
+	}
+	
+	public void initialFile() throws IOException{
+		FileWriter fw = new FileWriter("shoot_training");
+		fw.write("");
+		fw.close();
 	}
 
 	public void initial() throws IOException {
@@ -133,6 +140,7 @@ public class PSO {
 		double[] new_velocity = new double[dimension];
 		double[] new_positions = new double[dimension];
 		while (c_generation < generations) {
+			print_pbest();
 			System.out.println("generation: "+c_generation);		
 			c_generation++;
 			for (int i = 0; i < swarm_size; i++) {
@@ -181,7 +189,14 @@ public class PSO {
 						gbest = population[i];
 					}
 				}
-			}
+				
+			}//end for
+		}//end while
+	}
+	
+	public void print_pbest() throws IOException {
+		for (int i = 0; i < swarm_size; i++) {
+			System.out.println(" fitness:"+fitness(pbest[i]));
 		}
 	}
 }

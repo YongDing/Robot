@@ -155,10 +155,10 @@ public class Network {
 		n.setprevious(a);
 	}
 
-	public void updateWeight() throws IOException {
+	public void updateWeight(String path) throws IOException {
 		ArrayList<Double> weights = new ArrayList<Double>();
 		ArrayList<Double> temp = new ArrayList<Double>();
-		weights = readToDouble("shoot_training");
+		weights = readToDouble(path);
 		if (weights.size() > 0) {
 			for (int i = 0; i < hidden_number; i++) {
 				temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(i*(input_number+1), (i+1)*(input_number+1)));

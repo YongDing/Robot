@@ -7,6 +7,8 @@ public class MainAPP {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		PSO pso=new PSO();
+		
+		pso.initialFile();
 		pso.setEnviroment();
 		
 		pso.initial();
