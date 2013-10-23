@@ -14,7 +14,7 @@ import ANN.Network;
 
 public class PSO {
 	int swarm_size, dimension;
-	int generations=200;
+	int generations = 200;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -25,6 +25,7 @@ public class PSO {
 
 	double[][] velocity;
 
+	int[] bestfitness;
 	// robocode environment
 	RobocodeEngine engine;
 	PSOObserver obsever;
@@ -44,6 +45,8 @@ public class PSO {
 		population = new Particle[swarm_size];
 		velocity = new double[swarm_size][dimension];
 		pbest = new Particle[swarm_size];
+
+		bestfitness = new int[swarm_size];
 	}
 
 	public void modify_parameters(double w, double c1, double c2) {
@@ -51,9 +54,9 @@ public class PSO {
 		this.c1 = c1;
 		this.c2 = c2;
 	}
-	
-	public void initialFile() throws IOException{
-		FileWriter fw = new FileWriter("shoot_training");
+
+	public void initialFile() throws IOException {
+		FileWriter fw = new FileWriter("bin//sample//Robotd.data//training_weights");
 		fw.write("");
 		fw.close();
 	}
@@ -73,11 +76,14 @@ public class PSO {
 
 		// initial gbest
 		gbest = population[0];
+		int gbest_index = 0;
 		for (int i = 0; i < swarm_size; i++) {
-			if (fitness(population[i]) > fitness(gbest)) {
-				gbest = population[i];
+			bestfitness[i] = fitness(population[i]);
+			if (bestfitness[i] > bestfitness[gbest_index]) {
+				gbest_index = i;
 			}
 		}
+		gbest = population[gbest_index];
 
 		// initial velocity of all particles
 		for (int i = 0; i < swarm_size; i++) {
@@ -122,9 +128,9 @@ public class PSO {
 	}
 
 	public int fitness(Particle c) throws IOException {
-		c.writeFile("shoot_training", c.generateText());
+		c.writeFile("bin//sample//Robotd.data//training_weights",
+				c.generateText());
 
-		
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
 		int sum = 0;
@@ -141,7 +147,7 @@ public class PSO {
 		double[] new_positions = new double[dimension];
 		while (c_generation < generations) {
 			print_pbest();
-			System.out.println("generation: "+c_generation);		
+			System.out.println("generation: " + c_generation);
 			c_generation++;
 			for (int i = 0; i < swarm_size; i++) {
 				r1 = Math.random();
@@ -183,20 +189,23 @@ public class PSO {
 				population[i].setPosition(new_positions);
 				new_positions = new double[dimension];
 
-				if (fitness(population[i]) > fitness(pbest[i])) {
+				int x = fitness(population[i]);
+				if (x > bestfitness[i]) {
 					pbest[i] = population[i];
-					if (fitness(population[i]) > fitness(gbest)) {
+					bestfitness[i] = x;
+					if (x > fitness(gbest)) {
 						gbest = population[i];
 					}
 				}
-				
-			}//end for
-		}//end while
+
+			}// end for
+		print_pbest();
+		}// end while
 	}
-	
+
 	public void print_pbest() throws IOException {
 		for (int i = 0; i < swarm_size; i++) {
-			System.out.println(" fitness:"+fitness(pbest[i]));
+			System.out.println(" fitness:" + bestfitness[i]);
 		}
 	}
 }

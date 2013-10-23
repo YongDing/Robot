@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,20 +63,13 @@ public class Robotd extends AdvancedRobot {
 				if (flag) {
 					try {
 						if (isTraining(enemy.name)) {
-							// try {
-							// network.updateWeight("data//"+enemy.name);
-							// } catch (IOException e) {
-							// // TODO Auto-generated catch block
-							// e.printStackTrace();
-							// }
-							// flag=false;
+							ArrayList<Double> weights = this.getBestWeight(enemy.name);
+							network.updateWeight(weights);
+							flag=false;
 						} else {
-							// try {
-							// network.updateWeight("shoot_training");
-							// } catch (IOException e) {
-							// // TODO Auto-generated catch block
-							// e.printStackTrace();
-							// }
+							ArrayList<Double> weights = this.getTrainingWeight();
+							network.updateWeight(weights);
+							flag=false;
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -162,10 +156,56 @@ public class Robotd extends AdvancedRobot {
 
 	public boolean isTraining(String enemyName) throws IOException {
 		BufferedReader reader = null;
-		reader = new BufferedReader(new FileReader(getDataFile("trained_weights")));
-//		String text=FileOperator.readToBuffer("shoot_training");
-//		if (file.exists())
-//			return true;
+		reader = new BufferedReader(new FileReader(getDataFile(enemyName)));
+		if (reader.readLine() != null) {
+			return true;
+		}
 		return false;
+	}
+	
+	public ArrayList<Double> getBestWeight(String enemyName) throws IOException{
+		ArrayList<Double> weights = new ArrayList<Double>();
+		BufferedReader reader = null;
+		ArrayList<String> text = new ArrayList<String>();
+		for (int i = 0; i < Network.hidden_number; i++) {
+			text.add("hidden_" + i + "_weights");
+		}
+		text.add("output_weights");
+		String line;
+		double d;
+		
+		reader = new BufferedReader(new FileReader(getDataFile(enemyName)));
+		line = reader.readLine();
+		while (line != null) {
+			if (!text.contains(line)) {
+				d = Double.parseDouble(line.toString());
+				weights.add(d);
+				line = reader.readLine();
+			}
+		}
+		return weights;
+	}
+	
+	public ArrayList<Double> getTrainingWeight() throws IOException{
+		ArrayList<Double> weights = new ArrayList<Double>();
+		BufferedReader reader = null;
+		ArrayList<String> text = new ArrayList<String>();
+		for (int i = 0; i < Network.hidden_number; i++) {
+			text.add("hidden_" + i + "_weights");
+		}
+		text.add("output_weights");
+		String line;
+		double d;
+		
+		reader = new BufferedReader(new FileReader(getDataFile("training_weights")));
+		line = reader.readLine();
+		while (line != null) {
+			if (!text.contains(line)) {
+				d = Double.parseDouble(line.toString());
+				weights.add(d);
+				line = reader.readLine();
+			}
+		}
+		return weights;
 	}
 }

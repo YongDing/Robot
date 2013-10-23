@@ -166,6 +166,18 @@ public class Network {
 			}
 		}
 	}
+	
+	public void updateWeight(ArrayList<Double> weights) {
+		ArrayList<Double> temp = new ArrayList<Double>();
+		if (weights.size() > 0) {
+			for (int i = 0; i < hidden_number; i++) {
+				temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
+				n2[i].setWeights(temp);	
+			}
+			temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(hidden_number*(input_number+1), (hidden_number+1)));
+			n3.setWeights(temp);
+		}
+	}
 
 	public ArrayList<Double> readToDouble(String filePath) throws IOException {
 		InputStream is = new FileInputStream(filePath);
