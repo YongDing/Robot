@@ -14,7 +14,7 @@ import ANN.Network;
 
 public class PSO {
 	int swarm_size, dimension;
-	int generations = 2;
+	int generations = 200;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -56,15 +56,13 @@ public class PSO {
 	}
 
 	public void initialFile() throws IOException {
-		FileWriter fw = new FileWriter("bin//sample//Robotd.data//training_weights");
+		FileWriter fw = new FileWriter("bin//sample//Robotd.data//training_weights.dat");
 		fw.write("");
 		fw.close();
 	}
 
 	public void initial() throws IOException {
-		System.out.println("initialize robocode enviroment.....");
-		setEnviroment();
-		System.out.println("initialize positions of particles.......");
+		
 		double[] positions = null;
 		// initial pbest and particles
 		for (int i = 0; i < swarm_size; i++) {
@@ -88,10 +86,8 @@ public class PSO {
 		}
 		gbest = population[gbest_index];
 		
-		exit();
 		
-		
-		System.out.println("xxxxxxx");
+
 		// initial velocity of all particles
 		for (int i = 0; i < swarm_size; i++) {
 			for (int j = 0; j < dimension; j++) {
@@ -101,10 +97,9 @@ public class PSO {
 			velocity[i] = positions;
 			positions = new double[dimension];
 		}
-		System.out.println("xxxxxxx");
 	}
 
-	public void setEnviroment() {
+	public void setEnvironment() {
 		// Disable log messages from Robocode
 		RobocodeEngine.setLogMessagesEnabled(false);
 
@@ -136,9 +131,8 @@ public class PSO {
 	}
 
 	public int fitness(Particle c) throws IOException {
-		c.writeFile("bin//sample//Robotd.data//training_weights",
+		c.writeFile("bin//sample//Robotd.data//training_weights.dat",
 				c.generateText());
-
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
 		int sum = 0;

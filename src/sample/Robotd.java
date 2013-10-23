@@ -2,15 +2,14 @@ package sample;
 
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
 import robocode.HitWallEvent;
-import robocode.RobocodeFileOutputStream;
 import robocode.ScannedRobotEvent;
 import AI.Enemy;
 import ANN.Network;
@@ -25,7 +24,6 @@ public class Robotd extends AdvancedRobot {
 	 */
 	static boolean incrementedBattles = false;
 	Enemy enemy = new Enemy();
-	boolean flag = true;
 
 	public static double PI = Math.PI;
 	Network network = new Network();
@@ -40,79 +38,34 @@ public class Robotd extends AdvancedRobot {
 
 	public void run() {
 		// Initialization of the robot should be put here
-
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
-
 		// Robot main loop
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
 
-		int roundCount, battleCount;
-		
-		
-		try {
-			BufferedReader reader = null;
-			try {
-				// Read file "count.dat" which contains 2 lines, a round count, and a battle count
-				reader = new BufferedReader(new FileReader(getDataFile("training_weights.dat")));
+		setTurnRadarRightRadians(2 * PI);
+		execute();
 
-				// Try to get the counts
-				roundCount = Integer.parseInt(reader.readLine());
-				battleCount = Integer.parseInt(reader.readLine());
-
-			} finally {
-				if (reader != null) {
-					reader.close();
-				}
+		if (enemy.name != null) {
+			if (isTraining(enemy.name)) {
+				ArrayList<Double> weights = getBestWeight(enemy.name);
+				network.updateWeight(weights);
+			} else {
+				ArrayList<Double> weights = getTrainingWeight();
+				network.updateWeight(weights);
 			}
-		} catch (IOException e) {
-			// Something went wrong reading the file, reset to 0.
-			roundCount = 0;
-			battleCount = 0;
-		} catch (NumberFormatException e) {
-			// Something went wrong converting to ints, reset to 0
-			roundCount = 0;
-			battleCount = 0;
+		} else {
+			ArrayList<Double> weights = getTrainingWeight();
+			network.updateWeight(weights);
 		}
+//		ArrayList<Double> weights = getTrainingWeight();
+//		network.updateWeight(weights);
+//		execute();
 
-		// Increment the # of rounds
-		roundCount++;
-
-		// If we haven't incremented # of battles already,
-		// Note: Because robots are only instantiated once per battle, member variables remain valid throughout it.
-		if (!incrementedBattles) {
-			// Increment # of battles
-			battleCount++;
-			incrementedBattles = true;
-		}
-
-		PrintStream w = null;
-		try {
-			w = new PrintStream(new RobocodeFileOutputStream(getDataFile("training_weights.dat")));
-
-			w.println(roundCount);
-			w.println(battleCount);
-
-			// PrintStreams don't throw IOExceptions during prints, they simply set a flag.... so check it here.
-			if (w.checkError()) {
-				out.println("I could not write the count!");
-			}
-		} catch (IOException e) {
-			out.println("IOException trying to write: ");
-			e.printStackTrace(out);
-		} finally {
-			if (w != null) {
-				w.close();
-			}
-		}
-		out.println("I have been a sitting duck for " + roundCount + " rounds, in " + battleCount + " battles."); 
-		
 		while (true) {
-			// Replace the next 4 lines with any behavior you would like
-
 			if (enemy.name == null) {
 				setTurnRadarRightRadians(2 * PI);
 				this.setTurnRight(360);
@@ -120,33 +73,11 @@ public class Robotd extends AdvancedRobot {
 				ahead(200);
 				execute();
 			} else {
-//				if (flag) {
-//					try {
-//						if (isTraining(enemy.name)) {
-//							ArrayList<Double> weights = this
-//									.getBestWeight(enemy.name);
-//							network.updateWeight(weights);
-//							flag = false;
-//						} else {
-//							getTrainingWeight();
-//							// ArrayList<Double> weights =
-//							// this.getTrainingWeight();
-//							// network.updateWeight(weights);
-//							flag = false;
-//						}
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-				
-				
-				
 				this.setTurnRight(360);
 				// move
 				ahead(200);
 				// fire(1);
-				shoot();
+				shoot(2);
 				execute();
 
 			}
@@ -192,7 +123,7 @@ public class Robotd extends AdvancedRobot {
 		return angle;
 	}
 
-	public void shoot() {
+	public void shoot(int power) {
 		// input0 bearing of gun
 		// input1 power of bullet
 		// input2 distance
@@ -203,7 +134,7 @@ public class Robotd extends AdvancedRobot {
 		// input7 bearing of enemy
 		double input0, input1, input2, input3, input4, input5, input6, input7;
 		input0 = getGunHeadingRadians();
-		input1 = 2;
+		input1 = power;
 		input2 = enemy.distance;
 		input3 = getHeadingRadians();
 		input4 = getVelocity();
@@ -215,65 +146,104 @@ public class Robotd extends AdvancedRobot {
 				input6, input7);
 		double trunradians = network.getOutput();
 		this.turnGunRightRadians(trunradians);
-		this.fire(2);
+		this.fire(power);
 	}
 
-	public boolean isTraining(String enemyName) throws IOException {
+	public boolean isTraining(String enemyName) {
+		boolean flag = false;
 		BufferedReader reader = null;
-		reader = new BufferedReader(new FileReader(getDataFile(enemyName)));
-		if (reader.readLine() != null) {
-			return true;
+		try {
+			reader = new BufferedReader(new FileReader(getDataFile(enemyName)));
+			if (reader.readLine() != null) {
+				flag = true;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		return false;
+		return flag;
+
 	}
 
-	public ArrayList<Double> getBestWeight(String enemyName) throws IOException {
+	public ArrayList<Double> getBestWeight(String enemyName) {
 		ArrayList<Double> weights = new ArrayList<Double>();
-		BufferedReader reader = null;
+
 		ArrayList<String> text = new ArrayList<String>();
 		for (int i = 0; i < Network.hidden_number; i++) {
 			text.add("hidden_" + i + "_weights");
 		}
 		text.add("output_weights");
-		String line;
+		String line = "";
 		double d;
 
-		reader = new BufferedReader(new FileReader(getDataFile(enemyName)));
-		line = reader.readLine();
-		while (line != null) {
-			if (!text.contains(line)) {
-				d = Double.parseDouble(line.toString());
-				weights.add(d);
-				line = reader.readLine();
+		try {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(
+						getDataFile(enemyName)));
+
+				while (reader.readLine() != null) {
+					if (!text.contains(line)) {
+						d = Double.parseDouble(line.toString());
+						weights.add(d);
+						line = reader.readLine();
+					}
+				}
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
 			}
+		} catch (IOException e) {
+			// Something went wrong reading the file, reset to 0.
 		}
 		return weights;
 	}
 
-	public ArrayList<Double> getTrainingWeight() throws IOException {
+	public ArrayList<Double> getTrainingWeight() {
 		ArrayList<Double> weights = new ArrayList<Double>();
+
 		ArrayList<String> text = new ArrayList<String>();
 		for (int i = 0; i < Network.hidden_number; i++) {
 			text.add("hidden_" + i + "_weights");
 		}
 		text.add("output_weights");
+		String line = "";
 		double d;
 
-		
+		try {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(
+						getDataFile("training_weights.dat")));
 
-		// RobocodeFileWriter fileWriter = new
-		// RobocodeFileWriter("training_weights");
-		// fileWriter.write("1111.111");
-
-		// reader = new BufferedReader(new FileReader(file));
-		// line = reader.readLine();
-		// while (line != null) {
-		// if (!text.contains(line)) {
-		// d = Double.parseDouble(line.toString());
-		// weights.add(d);
-		// line = reader.readLine();
-		// }
-		// }
+				while (reader.readLine() != null) {
+					if (!text.contains(line)) {
+						d = Double.parseDouble(line.toString());
+						weights.add(d);
+						line = reader.readLine();
+					}
+				}
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			// Something went wrong reading the file, reset to 0.
+		}
 		return weights;
 	}
 }
