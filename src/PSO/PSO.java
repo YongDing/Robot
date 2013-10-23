@@ -1,6 +1,7 @@
 package PSO;
 
 import java.io.File;
+import java.io.IOException;
 
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
@@ -12,7 +13,7 @@ import ANN.Network;
 
 public class PSO {
 	int swarm_size, dimension;
-	int generations;
+	int generations=2;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -25,7 +26,7 @@ public class PSO {
 
 	// robocode environment
 	RobocodeEngine engine;
-	BattleObserver obsever;
+	PSOObserver obsever;
 	BattleCompletedEvent results;
 	BattleSpecification battleSpec;
 
@@ -38,7 +39,6 @@ public class PSO {
 		w = 0.73;
 		c1 = 1.19;
 		c2 = 1.19;
-		generations = 500;
 		vmax = range_max;
 		population = new Particle[swarm_size];
 		velocity = new double[swarm_size][dimension];
@@ -51,9 +51,7 @@ public class PSO {
 		this.c2 = c2;
 	}
 
-	public void initial() {
-		setEnviroment();
-		
+	public void initial() throws IOException {
 		double[] positions = null;
 		// initial pbest and particles
 		for (int i = 0; i < swarm_size; i++) {
@@ -93,7 +91,7 @@ public class PSO {
 		engine = new RobocodeEngine(new File("C:\\robocode"));
 
 		// Add our own battle listener to the RobocodeEngine
-		obsever = new BattleObserver();
+		obsever = new PSOObserver();
 		engine.addBattleListener(obsever);
 
 		// Show the Robocode battle view
@@ -114,12 +112,12 @@ public class PSO {
 	public void exit() {
 		// Cleanup our RobocodeEngine
 		engine.close();
-
-		// Make sure that the Java VM is shut down properly
-		System.exit(0);
 	}
 
-	public int fitness(Particle c) {
+	public int fitness(Particle c) throws IOException {
+		c.writeFile("shoot_training", c.generateText());
+
+		
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
 		int sum = 0;
@@ -129,12 +127,13 @@ public class PSO {
 		return sum / 5;
 	}
 
-	public void run() {
+	public void run() throws IOException {
 		c_generation = 1;
 		double r1, r2;
 		double[] new_velocity = new double[dimension];
 		double[] new_positions = new double[dimension];
 		while (c_generation < generations) {
+			System.out.println("generation: "+c_generation);		
 			c_generation++;
 			for (int i = 0; i < swarm_size; i++) {
 				r1 = Math.random();
@@ -183,9 +182,6 @@ public class PSO {
 					}
 				}
 			}
-
-			// System.out.println("-----------------------------------");
-			exit();
 		}
 	}
 }
