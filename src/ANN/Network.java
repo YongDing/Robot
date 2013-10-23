@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-	final int input_number = 8, hidden_number = 10;
+	public static final int input_number = 8;
+	public static final int hidden_number = 10;
 
 	public Neuron[] n1;// Input nodes
 	public Neuron[] n2;// Hidden nodes
@@ -173,6 +174,7 @@ public class Network {
 		for (int i = 0; i < hidden_number; i++) {
 			text.add("hidden_" + i + "_weights");
 		}
+		text.add("output_weights");
 		String line;
 		double d;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -189,11 +191,7 @@ public class Network {
 		return weights;
 	}
 
-	public void writeFile(String filePath, String content) throws IOException {
-		FileWriter fw = new FileWriter(filePath);
-		fw.write(content);
-		fw.close();
-	}
+
 	
 	public String readToBuffer(StringBuffer buffer, String filePath)
 			throws IOException {
