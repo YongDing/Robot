@@ -35,7 +35,7 @@ public class BattleRunner {
  
          int numberOfRounds = 50;
          BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.Robotd, sample.Crazy");
+         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.Robotd, sample.SittingDuck");
 //         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.RobotLu, sample.Crazy");
 //         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.DodgeRobot, sample.Crazy");
 //         RobotSpecification[] selectedRobots = engine.getLocalRepository(" sample.AntiGravityRobot, sample.Crazy");

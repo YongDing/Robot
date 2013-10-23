@@ -14,7 +14,7 @@ import ANN.Network;
 
 public class PSO {
 	int swarm_size, dimension;
-	int generations = 200;
+	int generations = 2;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -62,6 +62,9 @@ public class PSO {
 	}
 
 	public void initial() throws IOException {
+		System.out.println("initialize robocode enviroment.....");
+		setEnviroment();
+		System.out.println("initialize positions of particles.......");
 		double[] positions = null;
 		// initial pbest and particles
 		for (int i = 0; i < swarm_size; i++) {
@@ -73,7 +76,7 @@ public class PSO {
 			population[i] = new Particle(positions);
 			pbest[i] = population[i];
 		}
-
+		
 		// initial gbest
 		gbest = population[0];
 		int gbest_index = 0;
@@ -84,7 +87,11 @@ public class PSO {
 			}
 		}
 		gbest = population[gbest_index];
-
+		
+		exit();
+		
+		
+		System.out.println("xxxxxxx");
 		// initial velocity of all particles
 		for (int i = 0; i < swarm_size; i++) {
 			for (int j = 0; j < dimension; j++) {
@@ -94,6 +101,7 @@ public class PSO {
 			velocity[i] = positions;
 			positions = new double[dimension];
 		}
+		System.out.println("xxxxxxx");
 	}
 
 	public void setEnviroment() {
@@ -146,8 +154,8 @@ public class PSO {
 		double[] new_velocity = new double[dimension];
 		double[] new_positions = new double[dimension];
 		while (c_generation < generations) {
-			print_pbest();
 			System.out.println("generation: " + c_generation);
+			print_pbest();
 			c_generation++;
 			for (int i = 0; i < swarm_size; i++) {
 				r1 = Math.random();
@@ -199,7 +207,7 @@ public class PSO {
 				}
 
 			}// end for
-		print_pbest();
+		
 		}// end while
 	}
 
