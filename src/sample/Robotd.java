@@ -49,20 +49,21 @@ public class Robotd extends AdvancedRobot {
 		setTurnRadarRightRadians(2 * PI);
 		execute();
 
-		if (enemy.name != null) {
-			if (isTraining(enemy.name)) {
-				ArrayList<Double> weights = getBestWeight(enemy.name);
-				network.updateWeight(weights);
-			} else {
-				ArrayList<Double> weights = getTrainingWeight();
-				network.updateWeight(weights);
-			}
-		} else {
-			ArrayList<Double> weights = getTrainingWeight();
-			network.updateWeight(weights);
-		}
-//		ArrayList<Double> weights = getTrainingWeight();
-//		network.updateWeight(weights);
+//		ArrayList<Double> weights=new ArrayList<Double>();
+//		if (enemy.name != null) {
+//			if (isTraining(enemy.name)) {
+//				weights = getBestWeight(enemy.name);
+//				network.updateWeight(weights);
+//			} else {
+//				weights = getTrainingWeight();
+//				network.updateWeight(weights);
+//			}
+//		} else {
+//			weights = getTrainingWeight();
+//			network.updateWeight(weights);
+//		}
+		ArrayList<Double> weights = getTrainingWeight();
+		network.updateWeight(weights);
 //		execute();
 
 		while (true) {
@@ -193,13 +194,13 @@ public class Robotd extends AdvancedRobot {
 			try {
 				reader = new BufferedReader(new FileReader(
 						getDataFile(enemyName)));
-
-				while (reader.readLine() != null) {
+				line=reader.readLine();
+				while (line!= null) {
 					if (!text.contains(line)) {
 						d = Double.parseDouble(line.toString());
-						weights.add(d);
-						line = reader.readLine();
+						weights.add(d);		
 					}
+					line = reader.readLine();
 				}
 			} finally {
 				if (reader != null) {
@@ -228,13 +229,13 @@ public class Robotd extends AdvancedRobot {
 			try {
 				reader = new BufferedReader(new FileReader(
 						getDataFile("training_weights.dat")));
-
-				while (reader.readLine() != null) {
+				line=reader.readLine();
+				while (line!= null) {
 					if (!text.contains(line)) {
 						d = Double.parseDouble(line.toString());
-						weights.add(d);
-						line = reader.readLine();
+						weights.add(d);	
 					}
+					line = reader.readLine();
 				}
 			} finally {
 				if (reader != null) {

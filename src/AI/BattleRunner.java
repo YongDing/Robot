@@ -23,7 +23,7 @@ public class BattleRunner {
 		// Create the RobocodeEngine
 		// RobocodeEngine engine = new RobocodeEngine(); // Run from current
 		// working directory
-		RobocodeEngine engine = new RobocodeEngine(new File("C:\\robocode"));
+		RobocodeEngine engine = new RobocodeEngine(new File("C:/robocode"));
 		// RobocodeEngine engine = new RobocodeEngine(new
 		// File("/Users/xiaoyilu/robocode"));
 		// Add our own battle listener to the RobocodeEngine
