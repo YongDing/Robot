@@ -3,9 +3,9 @@ package Movement;
 import module.Movement;
 import module.Skeleton;
 
-public class DodgeBullet extends Movement{
+public class DodgeBulletMovement extends Movement{
 
-	public DodgeBullet(Skeleton bot) {
+	public DodgeBulletMovement(Skeleton bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}

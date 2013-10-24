@@ -3,9 +3,9 @@ package Movement;
 import module.Movement;
 import module.Skeleton;
 
-public class CircularMove extends Movement{
+public class CircularMovement extends Movement{
 
-	public CircularMove(Skeleton bot) {
+	public CircularMovement(Skeleton bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}

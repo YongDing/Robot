@@ -3,9 +3,9 @@ package Movement;
 import module.Movement;
 import module.Skeleton;
 
-public class SquareOff extends Movement{
+public class SquareOffMovement extends Movement{
 
-	public SquareOff(Skeleton bot) {
+	public SquareOffMovement(Skeleton bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}

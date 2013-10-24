@@ -3,9 +3,9 @@ package Movement;
 import module.Movement;
 import module.Skeleton;
 
-public class RandomMove extends Movement{
+public class RandomMovement extends Movement{
 
-	public RandomMove(Skeleton bot) {
+	public RandomMovement(Skeleton bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}

@@ -3,9 +3,9 @@ package Gun;
 import module.Gun;
 import module.Skeleton;
 
-public class CeaseFile extends Gun{
+public class CeaseFire extends Gun{
 
-	public CeaseFile(Skeleton bot) {
+	public CeaseFire(Skeleton bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}
