@@ -1,9 +1,9 @@
 package module;
 
-public class EnermySelector extends Component{
+public class EnemySelector extends Component{
 	public Skeleton bot;
 	
-	public EnermySelector(Skeleton bot){
+	public EnemySelector(Skeleton bot){
 		this.bot = bot;
 	}
 	
