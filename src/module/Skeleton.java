@@ -11,16 +11,18 @@ import robocode.AdvancedRobot;
 import robocode.Bullet;
 import robocode.Condition;
 import robocode.CustomEvent;
+import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 public abstract class Skeleton extends AdvancedRobot{
-	
+	public int moveDirection = 1;
+	public int scanDirection = 1;
 	//Core Component
 	public Radar radar;
 	public Gun gun;
 	public Movement movement;
-	public EnermySelector enemySelector;
+	public EnemySelector enemySelector;
 	public Targeting targeting;
 	
 	// The power of the next bullet
@@ -89,8 +91,9 @@ public abstract class Skeleton extends AdvancedRobot{
 	private void executeBehavior() {
 		enemySelector.select();
 		radar.scan();
-		gun.fire();
+		//The order is important!
 		targeting.target();
+		gun.fire();
 		movement.move();
 		execute();
 	}
@@ -167,6 +170,7 @@ public abstract class Skeleton extends AdvancedRobot{
 	}
 
 	public void onHitWall(HitWallEvent e) {
+		moveDirection *= -1;
 		listenEvent(e);
 	}
 
