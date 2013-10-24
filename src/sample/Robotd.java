@@ -247,4 +247,5 @@ public class Robotd extends AdvancedRobot {
 		}
 		return weights;
 	}
+	
 }
