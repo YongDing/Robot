@@ -34,7 +34,7 @@ public class BattleRunner {
 		engine.setVisible(true);
 		// Setup the battle specification
 
-		int numberOfRounds = 50;
+		int numberOfRounds = 5;
 		BattlefieldSpecification battlefield = new BattlefieldSpecification(
 				800, 600); // 800x600
 		RobotSpecification[] selectedRobots = engine

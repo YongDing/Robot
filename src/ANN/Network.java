@@ -169,13 +169,19 @@ public class Network {
 	
 	public void updateWeight(ArrayList<Double> weights) {
 		ArrayList<Double> temp = new ArrayList<Double>();
+//		ArrayList<Double> temp1 = new ArrayList<Double>();
+//		ArrayList<Double> temp2 = new ArrayList<Double>();
 		if (weights.size() > 0) {
 			for (int i = 0; i < hidden_number; i++) {
-				temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
+				temp=new ArrayList<Double>(weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
+//				temp1=new ArrayList<Double>(temp.subList(0, input_number));
+//				temp2=new ArrayList<Double>(temp.subList(input_number, input_number+1));
 				n2[i].setWeights(temp);	
+//				bias[i].setWeights(weights);
 			}
-			temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(hidden_number*(input_number+1), (hidden_number+1)));
+			temp=new ArrayList<Double>(weights.subList(hidden_number*(input_number+1), hidden_number*(input_number+1)+hidden_number+1));
 			n3.setWeights(temp);
+			
 		}
 	}
 
