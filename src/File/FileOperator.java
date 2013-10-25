@@ -2,6 +2,7 @@ package File;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +27,12 @@ public class FileOperator {
 		reader.close();
 		is.close();
 		return buffer.toString();
+	}
+	
+	public void writeFile(String filePath, String content) throws IOException {
+		FileWriter fw = new FileWriter(filePath);
+		fw.write(content);
+		fw.close();
 	}
 
 }

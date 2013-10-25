@@ -18,7 +18,13 @@ public class PSOObserver extends BattleAdaptor {
 
 	// Called when the battle is completed successfully with battle results
     public void onBattleCompleted(BattleCompletedEvent e) {
+   	 
    	 result=e;
+//     System.out.println("-- Battle has completed --");
+//     System.out.println("Battle results:");
+//     for (robocode.BattleResults result : e.getSortedResults()) {
+//         System.out.println("  " + result.getTeamLeaderName() + ": " + result.getScore());
+//     }
     }
 
     // Called when the game sends out an information message during the battle

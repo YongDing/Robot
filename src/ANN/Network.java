@@ -155,29 +155,14 @@ public class Network {
 		n.setprevious(a);
 	}
 
-	public void updateWeight(String path) throws IOException {
-		ArrayList<Double> weights = new ArrayList<Double>();
-		ArrayList<Double> temp = new ArrayList<Double>();
-		weights = readToDouble(path);
-		if (weights.size() > 0) {
-			for (int i = 0; i < hidden_number; i++) {
-				temp=new ArrayList<Double>((ArrayList<Double>) weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
-				n2[i].setWeights(temp);	
-			}
-		}
-	}
+
 	
 	public void updateWeight(ArrayList<Double> weights) {
 		ArrayList<Double> temp = new ArrayList<Double>();
-//		ArrayList<Double> temp1 = new ArrayList<Double>();
-//		ArrayList<Double> temp2 = new ArrayList<Double>();
 		if (weights.size() > 0) {
 			for (int i = 0; i < hidden_number; i++) {
 				temp=new ArrayList<Double>(weights.subList(i*(input_number+1), (i+1)*(input_number+1)));
-//				temp1=new ArrayList<Double>(temp.subList(0, input_number));
-//				temp2=new ArrayList<Double>(temp.subList(input_number, input_number+1));
 				n2[i].setWeights(temp);	
-//				bias[i].setWeights(weights);
 			}
 			temp=new ArrayList<Double>(weights.subList(hidden_number*(input_number+1), hidden_number*(input_number+1)+hidden_number+1));
 			n3.setWeights(temp);
@@ -185,47 +170,6 @@ public class Network {
 		}
 	}
 
-	public ArrayList<Double> readToDouble(String filePath) throws IOException {
-		InputStream is = new FileInputStream(filePath);
-		ArrayList<Double> weights = new ArrayList<Double>();
-		ArrayList<String> text = new ArrayList<String>();
-		for (int i = 0; i < hidden_number; i++) {
-			text.add("hidden_" + i + "_weights");
-		}
-		text.add("output_weights");
-		String line;
-		double d;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		line = reader.readLine();
-		while (line != null) {
-			if (!text.contains(line)) {
-				d = Double.parseDouble(line.toString());
-				weights.add(d);
-				line = reader.readLine();
-			}
-		}
-		reader.close();
-		is.close();
-		return weights;
-	}
 
-
-	
-	public String readToBuffer(StringBuffer buffer, String filePath)
-			throws IOException {
-		InputStream is = new FileInputStream(filePath);
-		String line;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		line = reader.readLine();
-		while (line != null) {
-			buffer.append(line);
-			buffer.append("\n");
-			line = reader.readLine();
-		}
-		reader.close();
-		is.close();
-		return buffer.toString();
-	}
-	
 	
 }

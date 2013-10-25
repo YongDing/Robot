@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import robocode.AdvancedRobot;
 import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 import AI.Enemy;
@@ -46,39 +47,41 @@ public class Robotd extends AdvancedRobot {
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
 
-		setTurnRadarRightRadians(2 * PI);
-		execute();
+		turnRadarRightRadians(2 * PI);
 
-//		ArrayList<Double> weights=new ArrayList<Double>();
-//		if (enemy.name != null) {
-//			if (isTraining(enemy.name)) {
-//				weights = getBestWeight(enemy.name);
-//				network.updateWeight(weights);
-//			} else {
-//				weights = getTrainingWeight();
-//				network.updateWeight(weights);
-//			}
-//		} else {
-//			weights = getTrainingWeight();
-//			network.updateWeight(weights);
-//		}
+		// ArrayList<Double> weights=new ArrayList<Double>();
+		// if (enemy.name != null) {
+		// if (isTraining(enemy.name)) {
+		// weights = getBestWeight(enemy.name);
+		// network.updateWeight(weights);
+		// } else {
+		// weights = getTrainingWeight();
+		// network.updateWeight(weights);
+		// }
+		// } else {
+		// weights = getTrainingWeight();
+		// network.updateWeight(weights);
+		// }
+
 		ArrayList<Double> weights = getTrainingWeight();
 		network.updateWeight(weights);
-//		execute();
+		// execute();
 
 		while (true) {
 			if (enemy.name == null) {
-				setTurnRadarRightRadians(2 * PI);
-				this.setTurnRight(360);
-				// move
-				ahead(200);
-				execute();
+				turnRadarRightRadians(2 * PI);
 			} else {
-				this.setTurnRight(360);
-				// move
-				ahead(200);
-				// fire(1);
-				shoot(2);
+
+				 this.setTurnRight(180);
+				 this.setAhead(400);
+
+				if (enemy.distance < 100) {
+					shoot(3);
+				} else if (enemy.distance < 500 && enemy.distance >= 100) {
+					shoot(2);
+				} else {
+					shoot(1);
+				}
 				execute();
 
 			}
@@ -95,7 +98,6 @@ public class Robotd extends AdvancedRobot {
 		enemy.update(e, this);
 		double Offset = rectify(enemy.direction - getRadarHeadingRadians());
 		setTurnRadarRightRadians(Offset * 1.1);
-
 		// shoot();
 	}
 
@@ -111,8 +113,7 @@ public class Robotd extends AdvancedRobot {
 	 * onHitWall: What to do when you hit a wall
 	 */
 	public void onHitWall(HitWallEvent e) {
-		// Replace the next line with any behavior you would like
-		this.turnRight(180);
+		setBack(200);
 		enemy.name = null;
 	}
 
@@ -122,6 +123,15 @@ public class Robotd extends AdvancedRobot {
 		if (angle > Math.PI)
 			angle -= 2 * Math.PI;
 		return angle;
+	}
+
+	public void onHitRobot(HitRobotEvent event) {
+		enemy.name = null;
+		if (event.getBearing() > -90 && event.getBearing() <= 90) {
+			back(100);
+		} else {
+			ahead(100);
+		}
 	}
 
 	public void shoot(int power) {
@@ -194,11 +204,11 @@ public class Robotd extends AdvancedRobot {
 			try {
 				reader = new BufferedReader(new FileReader(
 						getDataFile(enemyName)));
-				line=reader.readLine();
-				while (line!= null) {
+				line = reader.readLine();
+				while (line != null) {
 					if (!text.contains(line)) {
 						d = Double.parseDouble(line.toString());
-						weights.add(d);		
+						weights.add(d);
 					}
 					line = reader.readLine();
 				}
@@ -229,11 +239,11 @@ public class Robotd extends AdvancedRobot {
 			try {
 				reader = new BufferedReader(new FileReader(
 						getDataFile("training_weights.dat")));
-				line=reader.readLine();
-				while (line!= null) {
+				line = reader.readLine();
+				while (line != null) {
 					if (!text.contains(line)) {
 						d = Double.parseDouble(line.toString());
-						weights.add(d);	
+						weights.add(d);
 					}
 					line = reader.readLine();
 				}
@@ -247,5 +257,5 @@ public class Robotd extends AdvancedRobot {
 		}
 		return weights;
 	}
-	
+
 }

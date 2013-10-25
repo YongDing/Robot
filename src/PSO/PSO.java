@@ -13,8 +13,9 @@ import AI.BattleObserver;
 import ANN.Network;
 
 public class PSO {
+	int numberOfRounds = 10;
 	int swarm_size, dimension;
-	int generations = 200;
+	int generations = 500;
 	int c_generation = 1;
 	// parameters of PSO
 	double w, c1, c2, range_max, range_min;
@@ -23,6 +24,12 @@ public class PSO {
 	Particle[] pbest;
 	Particle gbest;
 
+	String enemy = "";
+	String robot = "";
+	String pack="";
+	String name="";
+	String trainpath="";
+	
 	double[][] velocity;
 
 	int[] bestfitness;
@@ -32,7 +39,13 @@ public class PSO {
 	BattleCompletedEvent results;
 	BattleSpecification battleSpec;
 
-	public PSO() {
+	public PSO(String robot, String enemy) {
+		this.enemy = enemy;
+		this.robot = robot;
+		pack=robot.substring(0, robot.indexOf("."));
+		name=robot.substring(robot.indexOf(".")+1, robot.length());
+		
+		
 		dimension = (Network.input_number + 1) * Network.hidden_number
 				+ (Network.hidden_number + 1);
 		swarm_size = (int) (10 + 2 * Math.sqrt(dimension));
@@ -56,13 +69,14 @@ public class PSO {
 	}
 
 	public void initialFile() throws IOException {
-		FileWriter fw = new FileWriter("bin//sample//Robotd.data//training_weights.dat");
+		trainpath="bin//"+pack+"//"+name+".data//training_weights.dat";
+		FileWriter fw = new FileWriter(trainpath);
 		fw.write("");
 		fw.close();
 	}
 
 	public void initial() throws IOException {
-		
+
 		double[] positions = null;
 		// initial pbest and particles
 		for (int i = 0; i < swarm_size; i++) {
@@ -74,7 +88,7 @@ public class PSO {
 			population[i] = new Particle(positions);
 			pbest[i] = population[i];
 		}
-		
+
 		// initial gbest
 		gbest = population[0];
 		int gbest_index = 0;
@@ -85,17 +99,16 @@ public class PSO {
 			}
 		}
 		gbest = population[gbest_index];
-		
-		
 
 		// initial velocity of all particles
+		double[] temp = new double[dimension];
 		for (int i = 0; i < swarm_size; i++) {
 			for (int j = 0; j < dimension; j++) {
-				positions[j] = Math.random() * vmax
+				temp[j] = Math.random() * vmax
 						* (Math.random() > 0.5 ? 1 : -1);
 			}
-			velocity[i] = positions;
-			positions = new double[dimension];
+			velocity[i] = temp;
+			temp = new double[dimension];
 		}
 	}
 
@@ -114,11 +127,10 @@ public class PSO {
 		engine.setVisible(false);
 		// Setup the battle specification
 
-		int numberOfRounds = 5;
 		BattlefieldSpecification battlefield = new BattlefieldSpecification(
 				800, 600); // 800x600
-		RobotSpecification[] selectedRobots = engine
-				.getLocalRepository("sample.Robotd, sample.Crazy");
+		RobotSpecification[] selectedRobots = engine.getLocalRepository(robot
+				+ "," + enemy);
 
 		battleSpec = new BattleSpecification(numberOfRounds, battlefield,
 				selectedRobots);
@@ -131,15 +143,16 @@ public class PSO {
 	}
 
 	public int fitness(Particle c) throws IOException {
-		c.writeFile("bin//sample//Robotd.data//training_weights.dat",
-				c.generateText());
+		c.writeFile(trainpath,c.generateText());
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
 		int sum = 0;
 		for (robocode.BattleResults result : results.getSortedResults()) {
-			sum += result.getScore();
+			if (result.getTeamLeaderName().equals(robot)) {
+				sum += result.getBulletDamage();
+			}
 		}
-		return sum / 5;
+		return sum/numberOfRounds;
 	}
 
 	public void run() throws IOException {
@@ -199,9 +212,9 @@ public class PSO {
 						gbest = population[i];
 					}
 				}
-
+				gbest.writeFile("gbest", gbest.generateText());
 			}// end for
-		
+			
 		}// end while
 	}
 

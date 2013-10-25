@@ -1,37 +1,65 @@
 package ANN;
 
+import java.io.File;
+
+import robocode.control.BattleSpecification;
+import robocode.control.BattlefieldSpecification;
+import robocode.control.RobocodeEngine;
+import robocode.control.RobotSpecification;
+import robocode.control.events.BattleCompletedEvent;
+import sample.AntiGravityRobot;
+import sample.DodgeRobot;
+import sample.RobotLu;
+import sample.Robotd;
+import AI.BattleObserver;
+
 public class Test {
 	public static void main(String[] args) {
-		
-		
-		//input0 bearing of gun
-		//input1 power of bullet
-		//input2 distance
-		//input3 heading
-		//input4 velocity
-		//input5 heading of enemy
-		//input6 velocity of enemy
-		//input7 bearing of enemy
-		
-		double input0, input1, input2, input3, input4, input5, input6, input7;
-		Network network=new Network();
-		while(true){
-		
-		input0=(Math.random())*Math.PI;
-		input1=(Math.random())*3;
-		input2=(Math.random())*1000;
-		input3=(Math.random())*Math.PI;
-		input4=Math.random()*8;
-		input5=(Math.random())*Math.PI;
-		input6=(Math.random()-0.5)*5;
-		input7=(Math.random()-0.5)*Math.PI;
-		network.setInputs(input0, input1, input2, input3, input4, input5, input6, input7);
-		
-		double trunradians=network.getOutput();
-		
-		System.out.println(trunradians);}
-		
-		
-		
+		Robotd robot = new Robotd();
+		BattleCompletedEvent result;
+		RobotLu robotlu = new RobotLu();
+		DodgeRobot dodgeRobot = new DodgeRobot();
+		AntiGravityRobot antiGravityRobot = new AntiGravityRobot();
+		// Disable log messages from Robocode
+		RobocodeEngine.setLogMessagesEnabled(false);
+		// Create the RobocodeEngine
+		// RobocodeEngine engine = new RobocodeEngine(); // Run from current
+		// working directory
+		RobocodeEngine engine = new RobocodeEngine(new File("C:/robocode"));
+		// RobocodeEngine engine = new RobocodeEngine(new
+		// File("/Users/xiaoyilu/robocode"));
+		// Add our own battle listener to the RobocodeEngine
+		BattleObserver obsever = new BattleObserver();
+		engine.addBattleListener(obsever);
+
+		// Show the Robocode battle view
+		engine.setVisible(true);
+		// Setup the battle specification
+
+		int numberOfRounds = 5;
+		BattlefieldSpecification battlefield = new BattlefieldSpecification(
+				800, 600); // 800x600
+		RobotSpecification[] selectedRobots = engine
+				.getLocalRepository(" sample.Robotd, sample.SittingDuck");
+		// RobotSpecification[] selectedRobots =
+		// engine.getLocalRepository(" sample.RobotLu, sample.Crazy");
+		// RobotSpecification[] selectedRobots =
+		// engine.getLocalRepository(" sample.DodgeRobot, sample.Crazy");
+		// RobotSpecification[] selectedRobots =
+		// engine.getLocalRepository(" sample.AntiGravityRobot, sample.Crazy");
+
+		BattleSpecification battleSpec = new BattleSpecification(
+				numberOfRounds, battlefield, selectedRobots);
+
+		// Run our specified battle and let it run till it is over
+		engine.runBattle(battleSpec, true); // waits till the battle finishes
+		result = obsever.getResult();
+
+		// engine.runBattle(battleSpec, true); // waits till the battle finishes
+		// Cleanup our RobocodeEngine
+		engine.close();
+
+		// Make sure that the Java VM is shut down properly
+		System.exit(0);
 	}
 }

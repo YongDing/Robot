@@ -6,12 +6,12 @@ import sample.Robotd;
 
 public class MainAPP {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		Robotd robot=new Robotd();
 		
 		
-		PSO pso=new PSO();
+		PSO pso=new PSO("sample.Robotd","sample.SittingDuck");
 		System.out.println("cleaning data");
 		pso.initialFile();
 		System.out.println("set robocode environment");
