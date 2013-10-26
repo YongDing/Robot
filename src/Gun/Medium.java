@@ -2,13 +2,14 @@ package Gun;
 
 import robocode.Bullet;
 import robocode.Rules;
+import sample.SuperTank;
 import module.Gun;
 import module.Skeleton;
 
 public class Medium extends Gun{
 
-	public Medium(Skeleton bot) {
-		super(bot);
+	public Medium(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

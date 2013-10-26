@@ -1,12 +1,13 @@
 package Movement;
 
+import sample.SuperTank;
 import module.Movement;
 import module.Skeleton;
 
 public class DodgeBulletMovement extends Movement{
 
-	public DodgeBulletMovement(Skeleton bot) {
-		super(bot);
+	public DodgeBulletMovement(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -1,12 +1,13 @@
 package Movement;
 
+import sample.SuperTank;
 import module.Movement;
 import module.Skeleton;
 
 public class StopMovement extends Movement{
 
-	public StopMovement(Skeleton bot) {
-		super(bot);
+	public StopMovement(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

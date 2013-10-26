@@ -1,12 +1,13 @@
 package Movement;
 
+import sample.SuperTank;
 import module.Movement;
 import module.Skeleton;
 
 public class SquareOffMovement extends Movement{
 
-	public SquareOffMovement(Skeleton bot) {
-		super(bot);
+	public SquareOffMovement(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

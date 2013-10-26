@@ -1,12 +1,13 @@
 package Radar;
 
+import sample.SuperTank;
 import module.Radar;
 import module.Skeleton;
 
 public class OscillatingRadar extends Radar{
 
-	public OscillatingRadar(Skeleton bot) {
-		super(bot);
+	public OscillatingRadar(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

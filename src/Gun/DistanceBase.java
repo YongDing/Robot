@@ -2,13 +2,14 @@ package Gun;
 
 import robocode.Bullet;
 import robocode.Rules;
+import sample.SuperTank;
 import module.Gun;
 import module.Skeleton;
 
 public class DistanceBase extends Gun{
 
-	public DistanceBase(Skeleton bot) {
-		super(bot);
+	public DistanceBase(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

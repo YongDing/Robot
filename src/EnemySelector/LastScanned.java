@@ -2,6 +2,8 @@ package EnemySelector;
 
 import java.util.Iterator;
 
+import sample.SuperTank;
+
 import module.Component;
 import module.Enemy;
 import module.EnemySelector;
@@ -9,7 +11,7 @@ import module.Skeleton;
 
 public class LastScanned extends EnemySelector {
 
-	public LastScanned(Skeleton bot) {
+	public LastScanned(SuperTank bot) {
 		super(bot);
 		// TODO Auto-generated constructor stub
 	}

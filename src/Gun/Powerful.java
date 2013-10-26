@@ -2,13 +2,14 @@ package Gun;
 
 import robocode.Bullet;
 import robocode.Rules;
+import sample.SuperTank;
 import module.Gun;
 import module.Skeleton;
 
 public class Powerful extends Gun{
 
-	public Powerful(Skeleton bot) {
-		super(bot);
+	public Powerful(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -3,20 +3,22 @@ package Targeting;
 import java.awt.geom.Point2D;
 
 import robocode.util.Utils;
+import sample.SuperTank;
 
 import module.Skeleton;
 import module.Targeting;
 
 public class CircularTargeting extends Targeting{
 
-	public CircularTargeting(Skeleton bot) {
-		super(bot);
+	public CircularTargeting(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void target(){
 		double myX = bot.getX();
 		double myY = bot.getY();
+		
 		double absoluteBearing = bot.getHeadingRadians() + bot.enemy.bearingRadians;
 		double enemyX = bot.getX() + bot.enemy.distance * Math.sin(absoluteBearing);
 		double enemyY = bot.getY() + bot.enemy.distance * Math.cos(absoluteBearing);

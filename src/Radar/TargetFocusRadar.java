@@ -1,12 +1,13 @@
 package Radar;
 
+import sample.SuperTank;
 import module.Radar;
 import module.Skeleton;
 
 public class TargetFocusRadar extends Radar{
 
-	public TargetFocusRadar(Skeleton bot) {
-		super(bot);
+	public TargetFocusRadar(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

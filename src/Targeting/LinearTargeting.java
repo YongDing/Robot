@@ -3,14 +3,15 @@ package Targeting;
 import java.awt.geom.Point2D;
 
 import robocode.util.Utils;
+import sample.SuperTank;
 
 import module.Skeleton;
 import module.Targeting;
 
 public class LinearTargeting extends Targeting{
 
-	public LinearTargeting(Skeleton bot) {
-		super(bot);
+	public LinearTargeting(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

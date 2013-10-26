@@ -26,7 +26,7 @@ public class Chromosome implements Comparable<Chromosome> {
         public static final int[] STRATEGIES_ARR= { NO_OF_MOVEMENT, NO_OF_GUN, NO_OF_RADAR, NO_OF_TARGETING };
         
         /** The target gene, converted to an array for convenience. */
-        private static final char[] TARGET_GENE = "6322".toCharArray();
+        private static final char[] TARGET_GENE = "1111".toCharArray();
 
         /** Convenience randomizer. */
         private static final Random rand = new Random(System.currentTimeMillis());

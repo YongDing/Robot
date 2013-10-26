@@ -19,7 +19,8 @@ public class BattleRunnerLu {
 		BattleCompletedEvent result;
 
 		SuperTank superTank = new SuperTank();
-		 
+//		DodgeRobot dodgeRobot = new DodgeRobot();
+		  
 		// Disable log messages from Robocode
 		RobocodeEngine.setLogMessagesEnabled(false);
 		// Create the RobocodeEngine
@@ -31,7 +32,7 @@ public class BattleRunnerLu {
 		engine.addBattleListener(obsever);
 
 		// Show the Robocode battle view
-		engine.setVisible(true);
+		engine.setVisible(false);
 		// Setup the battle specification
 
 		int numberOfRounds = 1;
@@ -39,8 +40,8 @@ public class BattleRunnerLu {
 				800, 600); // 800x600
 		
 		 RobotSpecification[] selectedRobots =
-		 engine.getLocalRepository(" sample.SuperTank, sample.Crazy");
-
+		 engine.getLocalRepository("sample.SuperTank, sample.Crazy");
+ 
 
 		BattleSpecification battleSpec = new BattleSpecification(
 				numberOfRounds, battlefield, selectedRobots);

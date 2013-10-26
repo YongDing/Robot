@@ -3,13 +3,14 @@ package Radar;
 import robocode.Event;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
+import sample.SuperTank;
 import module.Radar;
 import module.Skeleton;
 
 public class TargetScopeFocusRadar extends Radar{
 
-	public TargetScopeFocusRadar(Skeleton bot) {
-		super(bot);
+	public TargetScopeFocusRadar(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	
