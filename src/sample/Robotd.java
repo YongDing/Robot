@@ -72,8 +72,8 @@ public class Robotd extends AdvancedRobot {
 				turnRadarRightRadians(2 * PI);
 			} else {
 
-				 this.setTurnRight(180);
-				 this.setAhead(400);
+//				 this.setTurnRight(180);
+//				 this.setAhead(400);
 
 				if (enemy.distance < 100) {
 					shoot(3);
@@ -153,8 +153,10 @@ public class Robotd extends AdvancedRobot {
 		input6 = enemy.velocity;
 		input7 = enemy.bearingRadian;
 
-		network.setInputs(input0, input1, input2, input3, input4, input5,
-				input6, input7);
+//		network.setInputs(input0, input1, input2, input3, input4, input5,
+//				input6, input7);
+		
+		network.setInputs(input0, input2, input3,input7);
 		double trunradians = network.getOutput();
 		this.turnGunRightRadians(trunradians);
 		this.fire(power);
