@@ -6,20 +6,22 @@ import java.io.IOException;
 import ANN.Network;
 
 public class Particle {
-	double[] position;
+	
 	int input_number = Network.input_number;
 	int hidden_number = Network.hidden_number;
-
-	public Particle(double[] position) {
-		this.position = position;
+	double[] position=new double[(input_number+1)*hidden_number+hidden_number+1];
+	
+	public Particle(double[] src) {
+		System.arraycopy(src, 0, position, 0,src.length);
 	}
 
 	public double[] getPosition() {
 		return position;
 	}
 
-	public void setPosition(double[] position) {
-		this.position = position;
+	public void setPosition(double[] src) {
+		
+		System.arraycopy(src, 0, position, 0,src.length);
 	}
 
 	public String generateText() {
@@ -37,6 +39,12 @@ public class Particle {
 			text+="\n";
 		}
 		return text;
+	}
+	
+	public void print(){
+		for(int i=0;i<position.length;i++){
+			System.out.println(position[i]);
+		}
 	}
 
 	public void writeFile(String filePath, String content) throws IOException {

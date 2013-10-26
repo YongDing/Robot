@@ -10,9 +10,12 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-	public static final int input_number = 8;
-	public static final int hidden_number = 10;
+//	public static final int input_number = 8;
+//	public static final int hidden_number = 10;
 
+	public static final int input_number = 4;
+	public static final int hidden_number = 3;
+	
 	public Neuron[] n1;// Input nodes
 	public Neuron[] n2;// Hidden nodes
 	public Neuron[] bias; // bias nodes
@@ -22,11 +25,10 @@ public class Network {
 	// input1 power of bullet
 	// input2 distance
 	// input3 heading
-	// input4 velocity
-	// input5 heading of enemy
-	// input6 velocity of enemy
-	// input7 bearing of enemy
-	double input0, input1, input2, input3, input4, input5, input6, input7;
+	// input4 heading of enemy
+	// input5 velocity of enemy
+	// input6 bearing of enemy
+	double input0, input1, input2, input3, input4, input5, input6;
 
 	public Network() {
 		initialStructure();
@@ -36,8 +38,20 @@ public class Network {
 		initialStructure(input_number, hidden_number);
 	}
 
+	
+	public void setInputs(double input0,  double input2, double input3,double input7) {
+
+		// normalize input (x-min)/(max-min)
+//		this.input0 = (input0 + Math.PI) / (Math.PI * 2);
+//		this.input2 = (input2 - 0) / 1000;
+//		this.input3 = input3 / (Math.PI * 2);
+//		this.input7 = (input7 + Math.PI) / (Math.PI * 2);
+//		initialInput2();
+//		initialValues();
+	}
+	
 	public void setInputs(double input0, double input1, double input2,
-			double input3, double input4, double input5, double input6,
+			double input3, double input5, double input6,
 			double input7) {
 
 		// normalize input (x-min)/(max-min)
@@ -45,13 +59,14 @@ public class Network {
 		this.input1 = (input1 - 1) / 2;
 		this.input2 = (input2 - 0) / 1000;
 		this.input3 = input3 / (Math.PI * 2);
-		this.input4 = (input4 + 8) / 16;
 		this.input5 = input5 / (Math.PI * 2);
 		this.input6 = (input6 + 8) / 16;
 		this.input7 = (input7 + Math.PI) / (Math.PI * 2);
 		initialInput();
 		initialValues();
 	}
+	
+	
 
 	public Neuron[] getInputNeurons() {
 		return n1;
@@ -79,6 +94,13 @@ public class Network {
 		n1[6].setValue(input6);
 		n1[7].setValue(input7);
 
+	}
+	
+	public void initialInput2() {
+		n1[0].setValue(input0);
+		n1[1].setValue(input2);
+		n1[2].setValue(input3);
+		n1[3].setValue(input7);
 	}
 
 	public void initialValues() {
