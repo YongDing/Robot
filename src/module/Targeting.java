@@ -1,9 +1,11 @@
 package module;
 
+import sample.SuperTank;
+
 public class Targeting extends Component{
-	public Skeleton bot;
+	public SuperTank bot;
 	
-	public Targeting(Skeleton bot) {
+	public Targeting(SuperTank bot) {
 		this.bot = bot;
 	}
 	

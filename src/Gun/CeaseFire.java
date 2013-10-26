@@ -1,12 +1,13 @@
 package Gun;
 
+import sample.SuperTank;
 import module.Gun;
 import module.Skeleton;
 
 public class CeaseFire extends Gun{
 
-	public CeaseFire(Skeleton bot) {
-		super(bot);
+	public CeaseFire(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	

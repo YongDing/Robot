@@ -14,15 +14,19 @@ import java.util.Random;
  * or <code>mutate</code> will result in a new <code>Chromosome</code>
  * instance being created.
  * 
- * @author John Svazic
- * @version 1.0
  */
 public class Chromosome implements Comparable<Chromosome> {
         private final String gene;
         private final int fitness;
         
+        public static final int NO_OF_MOVEMENT = 7;
+        public static final int NO_OF_GUN = 5;
+        public static final int NO_OF_RADAR = 4;
+        public static final int NO_OF_TARGETING = 4;
+        public static final int[] STRATEGIES_ARR= { NO_OF_MOVEMENT, NO_OF_GUN, NO_OF_RADAR, NO_OF_TARGETING };
+        
         /** The target gene, converted to an array for convenience. */
-        private static final char[] TARGET_GENE = "Hello, world!".toCharArray();
+        private static final char[] TARGET_GENE = "1111".toCharArray();
 
         /** Convenience randomizer. */
         private static final Random rand = new Random(System.currentTimeMillis());
@@ -89,9 +93,9 @@ public class Chromosome implements Comparable<Chromosome> {
         public Chromosome mutate() {
                 char[] arr  = gene.toCharArray();
                 int idx     = rand.nextInt(arr.length);
-                int delta   = (rand.nextInt() % 90) + 32;
-                arr[idx]    = (char) ((arr[idx] + delta) % 122);
-
+//                int delta   = (rand.nextInt() % 90) + 32;
+//                arr[idx]    = (char) ((arr[idx] + delta) % 122);
+                arr[idx] = Integer.toString(rand.nextInt(STRATEGIES_ARR[idx])).toCharArray()[0];
                 return new Chromosome(String.valueOf(arr));
         }
 
@@ -132,10 +136,10 @@ public class Chromosome implements Comparable<Chromosome> {
          * 
          * @return A randomly generated <code>Chromosome</code>.
          */
-        /* package */ static Chromosome generateRandom() {
-                char[] arr = new char[TARGET_GENE.length];
+        /* package */ public static Chromosome generateRandom() {
+                char[] arr = new char[STRATEGIES_ARR.length];
                 for (int i = 0; i < arr.length; i++) {
-                        arr[i] = (char) (rand.nextInt(90) + 32);
+                	arr[i] = Integer.toString(rand.nextInt(STRATEGIES_ARR[i])).toCharArray()[0];
                 }
 
                 return new Chromosome(String.valueOf(arr));
@@ -178,5 +182,12 @@ public class Chromosome implements Comparable<Chromosome> {
         public int hashCode() {                
                 return new StringBuilder().append(gene).append(fitness)
                                 .toString().hashCode();
+        }
+        
+        public static void main(String[] args) {
+        	Chromosome gene1 = Chromosome.generateRandom();
+        	System.out.println(gene1.getGene());
+ 
+        	
         }
 }

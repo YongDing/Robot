@@ -1,10 +1,12 @@
 package module;
 
+import sample.SuperTank;
+
 public class Radar extends Component{
 	
-	public Skeleton bot;
+	public SuperTank bot;
 	
-	public Radar(Skeleton bot) {
+	public Radar(SuperTank bot) {
 		this.bot = bot;
 	}
 	

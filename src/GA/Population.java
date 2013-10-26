@@ -14,9 +14,6 @@ import java.util.Random;
  * 
  * Note that this object is mutable, and calls to the <code>evolve()</code>
  * method will change the collection of <code>Chromosome</code>s.
- * 
- * @author John Svazic
- * @version 1.0
  */
 public class Population {
 

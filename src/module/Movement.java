@@ -1,9 +1,11 @@
 package module;
 
+import sample.SuperTank;
+
 public class Movement extends Component{
-	public Skeleton bot;
+	public SuperTank bot;
 	
-	public Movement(Skeleton bot){
+	public Movement(SuperTank bot){
 		this.bot = bot;
 	}
 	

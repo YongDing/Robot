@@ -1,12 +1,13 @@
 package Targeting;
 
+import sample.SuperTank;
 import module.Skeleton;
 import module.Targeting;
 
 public class HeadOnTargeting extends Targeting{
 
-	public HeadOnTargeting(Skeleton bot) {
-		super(bot);
+	public HeadOnTargeting(SuperTank superTank) {
+		super(superTank);
 		// TODO Auto-generated constructor stub
 	}
 	
