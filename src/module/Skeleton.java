@@ -4,6 +4,7 @@ import robocode.*;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+import java.awt.Color;
 import java.awt.event.InputEvent;
 
 
@@ -15,7 +16,7 @@ import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
-public abstract class Skeleton extends AdvancedRobot{
+public class Skeleton extends AdvancedRobot{
 	public int moveDirection = 1;
 	public int scanDirection = 1;
 	//Core Component
@@ -38,34 +39,7 @@ public abstract class Skeleton extends AdvancedRobot{
 	public Vector<BulletInfo> bullets = new Vector<BulletInfo>();
 	public Vector<BulletInfoEnemy> enemyBullets = new Vector<BulletInfoEnemy>();
 	
-	public void run() {
-		setAdjustRadarForRobotTurn(true);
-		setAdjustGunForRobotTurn(true);
-		setAdjustRadarForGunTurn(true);
-		
-		// Creating the custom event EnemyFires
-		addCustomEvent(new Condition("EnemyFires") {
-			public boolean test() {
-				return (enemy != null
-						&& enemy.previousEnergy > enemy.energy
-						&& enemy.previousEnergy - enemy.energy <= robocode.Rules.MAX_BULLET_POWER
-						&& !Utils.isNear((enemy.previousEnergy - enemy.energy),
-								robocode.Rules.getBulletDamage(bulletPower)) && enemy.distance > 55);
-			};
-		});
-		
-		initialize();
-		
-		while (true) {
-			updateEnemyBullets();
-			selectBehavior();
-			executeBehavior();
-		}
-	}
 	
-	protected abstract void initialize();
-	
-	protected abstract void selectBehavior();
 	
 	private void listenEvent(Event e) {
 		enemySelector.listen(e);
@@ -88,7 +62,7 @@ public abstract class Skeleton extends AdvancedRobot{
 			movement.listenInput(e);
 	}
 	
-	private void executeBehavior() {
+	protected void executeBehavior() {
 		enemySelector.select();
 		radar.scan();
 		//The order is important!
@@ -108,7 +82,7 @@ public abstract class Skeleton extends AdvancedRobot{
 	}
 	
 	//Calcute the position of the bullet
-	private void updateEnemyBullets() {
+	protected void updateEnemyBullets() {
 		Iterator<BulletInfoEnemy> i = enemyBullets.iterator();
 		while (i.hasNext()) {
 			BulletInfoEnemy bullet = i.next();

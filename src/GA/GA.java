@@ -10,10 +10,10 @@ public class GA {
     public static void main(String[] args) {
             
             // The size of the simulation population
-            final int populationSize = 2048;
+            final int populationSize = 20;
             
             // The maximum number of generations for the simulation.
-            final int maxGenerations = 16384;
+            final int maxGenerations = 100;
             
             // The probability of crossover for any member of the population,
             // where 0.0 <= crossoverRatio <= 1.0
