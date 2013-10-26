@@ -5,12 +5,18 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import robocode.AdvancedRobot;
+import robocode.BattleEndedEvent;
+import robocode.BulletHitEvent;
+import robocode.BulletMissedEvent;
+import robocode.DeathEvent;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
+import robocode.RobocodeFileOutputStream;
 import robocode.ScannedRobotEvent;
 import AI.Enemy;
 import ANN.Network;
@@ -23,10 +29,11 @@ public class Robotd extends AdvancedRobot {
 	/**
 	 * run: Yong's default behavior
 	 */
-	static boolean incrementedBattles = false;
 	Enemy enemy = new Enemy();
 
 	public static double PI = Math.PI;
+	public static int count_hit=0;
+	public static int count_miss = 0;
 	Network network = new Network();
 
 	public Network getNetwork() {
@@ -42,12 +49,11 @@ public class Robotd extends AdvancedRobot {
 		// After trying out your robot, try uncommenting the import at the top,
 		// and the next line:
 		// Robot main loop
+		double gunbearing = 0;
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
-
-		turnRadarRightRadians(2 * PI);
 
 		// ArrayList<Double> weights=new ArrayList<Double>();
 		// if (enemy.name != null) {
@@ -68,12 +74,20 @@ public class Robotd extends AdvancedRobot {
 		// execute();
 
 		while (true) {
-			if (enemy.name == null) {
-				turnRadarRightRadians(2 * PI);
+			gunbearing = this.getRadarHeadingRadians()
+					- this.getGunHeadingRadians();
+			if (gunbearing < Math.PI && gunbearing > -Math.PI) {
+				setTurnGunRightRadians(gunbearing);
 			} else {
-
-//				 this.setTurnRight(180);
-//				 this.setAhead(400);
+				setTurnGunLeftRadians(2 * Math.PI - gunbearing);
+			}
+			if (enemy.name == null) {
+				setTurnRadarRightRadians(2 * PI);
+				execute();
+			} else {
+				setTurnRight(180);
+				setAhead(200);
+				execute();
 
 				if (enemy.distance < 100) {
 					shoot(3);
@@ -82,7 +96,6 @@ public class Robotd extends AdvancedRobot {
 				} else {
 					shoot(1);
 				}
-				execute();
 
 			}
 
@@ -98,7 +111,6 @@ public class Robotd extends AdvancedRobot {
 		enemy.update(e, this);
 		double Offset = rectify(enemy.direction - getRadarHeadingRadians());
 		setTurnRadarRightRadians(Offset * 1.1);
-		// shoot();
 	}
 
 	/**
@@ -128,12 +140,30 @@ public class Robotd extends AdvancedRobot {
 	public void onHitRobot(HitRobotEvent event) {
 		enemy.name = null;
 		if (event.getBearing() > -90 && event.getBearing() <= 90) {
-			back(100);
+			setBack(100);
 		} else {
-			ahead(100);
+			setAhead(100);
 		}
 	}
 
+	public void onBulletMissed(BulletMissedEvent event) {
+		count_miss++;
+	}
+
+	public void onBulletHit(BulletHitEvent event) {
+		count_hit++;
+	}
+
+	public void onDeath(DeathEvent event){
+		
+	}
+	
+	public void onBattleEnded(BattleEndedEvent event) {
+		this.writeBulletResults();
+		count_hit=0;
+		count_miss=0;
+	}
+	
 	public void shoot(int power) {
 		// input0 bearing of gun
 		// input1 power of bullet
@@ -143,6 +173,7 @@ public class Robotd extends AdvancedRobot {
 		// input5 heading of enemy
 		// input6 velocity of enemy
 		// input7 bearing of enemy
+
 		double input0, input1, input2, input3, input4, input5, input6, input7;
 		input0 = getGunHeadingRadians();
 		input1 = power;
@@ -153,13 +184,13 @@ public class Robotd extends AdvancedRobot {
 		input6 = enemy.velocity;
 		input7 = enemy.bearingRadian;
 
-//		network.setInputs(input0, input1, input2, input3, input4, input5,
-//				input6, input7);
-		
-		network.setInputs(input0, input2, input3,input7);
+		network.setInputs(input0, input2, input3, input7);
 		double trunradians = network.getOutput();
-		this.turnGunRightRadians(trunradians);
-		this.fire(power);
+
+		if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 10) {
+			turnGunRightRadians(trunradians);
+			fire(power);
+		}
 	}
 
 	public boolean isTraining(String enemyName) {
@@ -188,6 +219,30 @@ public class Robotd extends AdvancedRobot {
 		}
 		return flag;
 
+	}
+
+	public void writeBulletResults() {
+		PrintStream w = null;
+		try {
+			w = new PrintStream(new RobocodeFileOutputStream(
+					getDataFile("bullets")));
+
+			w.println(count_miss);
+			w.println(count_hit);
+
+			// PrintStreams don't throw IOExceptions during prints, they simply
+			// set a flag.... so check it here.
+			if (w.checkError()) {
+				out.println("I could not write the count!");
+			}
+		} catch (IOException e) {
+			out.println("IOException trying to write: ");
+			e.printStackTrace(out);
+		} finally {
+			if (w != null) {
+				w.close();
+			}
+		}
 	}
 
 	public ArrayList<Double> getBestWeight(String enemyName) {

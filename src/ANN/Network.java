@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class Network {
 	// three layers
-//	public static final int input_number = 8;
-//	public static final int hidden_number = 10;
 
 	public static final int input_number = 4;
 	public static final int hidden_number = 3;
@@ -21,14 +19,11 @@ public class Network {
 	public Neuron[] bias; // bias nodes
 	public Neuron n3;// Output node, the degree should turn
 
-	// input0 bearing of gun
-	// input1 power of bullet
-	// input2 distance
-	// input3 heading
-	// input4 heading of enemy
-	// input5 velocity of enemy
-	// input6 bearing of enemy
-	double input0, input1, input2, input3, input4, input5, input6;
+	//input0 heading of enemy
+	//input1 velocity of enemy
+	//input2 distance of enemy
+	//input3 heading of gun
+	double input0, input1, input2, input3;
 
 	public Network() {
 		initialStructure();
@@ -39,29 +34,19 @@ public class Network {
 	}
 
 	
-	public void setInputs(double input0,  double input2, double input3,double input7) {
-
-		// normalize input (x-min)/(max-min)
-//		this.input0 = (input0 + Math.PI) / (Math.PI * 2);
-//		this.input2 = (input2 - 0) / 1000;
-//		this.input3 = input3 / (Math.PI * 2);
-//		this.input7 = (input7 + Math.PI) / (Math.PI * 2);
-//		initialInput2();
-//		initialValues();
-	}
-	
 	public void setInputs(double input0, double input1, double input2,
-			double input3, double input5, double input6,
-			double input7) {
+			double input3) {
 
 		// normalize input (x-min)/(max-min)
-		this.input0 = (input0 + Math.PI) / (Math.PI * 2);
-		this.input1 = (input1 - 1) / 2;
-		this.input2 = (input2 - 0) / 1000;
+		
+		//input0 heading of enemy
+		//input1 velocity of enemy
+		//input2 distance of enemy
+		//input3 heading of gun
+		this.input0 = (input0) / (Math.PI * 2);
+		this.input1 = (input1 +8) / 16;
+		this.input2 = (input2) / 1000;
 		this.input3 = input3 / (Math.PI * 2);
-		this.input5 = input5 / (Math.PI * 2);
-		this.input6 = (input6 + 8) / 16;
-		this.input7 = (input7 + Math.PI) / (Math.PI * 2);
 		initialInput();
 		initialValues();
 	}
@@ -89,18 +74,7 @@ public class Network {
 		n1[1].setValue(input1);
 		n1[2].setValue(input2);
 		n1[3].setValue(input3);
-		n1[4].setValue(input4);
-		n1[5].setValue(input5);
-		n1[6].setValue(input6);
-		n1[7].setValue(input7);
 
-	}
-	
-	public void initialInput2() {
-		n1[0].setValue(input0);
-		n1[1].setValue(input2);
-		n1[2].setValue(input3);
-		n1[3].setValue(input7);
 	}
 
 	public void initialValues() {
@@ -164,7 +138,8 @@ public class Network {
 
 	public double getOutput() {
 		this.initialValues();
-		double angle = (n3.getNeuronOutput() - 0.5) * 2 * Math.PI;
+//		double angle = (n3.getNeuronOutput() - 0.5) * (47/180)*Math.PI;
+		double angle = (n3.getNeuronOutput() - 0.5) * 2*Math.PI;
 		return angle;
 	}
 
@@ -187,8 +162,7 @@ public class Network {
 				n2[i].setWeights(temp);	
 			}
 			temp=new ArrayList<Double>(weights.subList(hidden_number*(input_number+1), hidden_number*(input_number+1)+hidden_number+1));
-			n3.setWeights(temp);
-			
+			n3.setWeights(temp);			
 		}
 	}
 

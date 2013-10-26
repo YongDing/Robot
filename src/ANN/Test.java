@@ -15,7 +15,7 @@ import AI.BattleObserver;
 
 public class Test {
 	public static void main(String[] args) {
-		Robotd robot = new Robotd();
+//		Robotd robot = new Robotd();
 		BattleCompletedEvent result;
 		RobotLu robotlu = new RobotLu();
 		DodgeRobot dodgeRobot = new DodgeRobot();
@@ -31,16 +31,21 @@ public class Test {
 		// Add our own battle listener to the RobocodeEngine
 		BattleObserver obsever = new BattleObserver();
 		engine.addBattleListener(obsever);
+		
+				
+				
+				
+				
 
 		// Show the Robocode battle view
 		engine.setVisible(true);
 		// Setup the battle specification
 
-		int numberOfRounds = 5;
+		int numberOfRounds = 1;
 		BattlefieldSpecification battlefield = new BattlefieldSpecification(
 				800, 600); // 800x600
 		RobotSpecification[] selectedRobots = engine
-				.getLocalRepository(" sample.Robotd, sample.SittingDuck");
+				.getLocalRepository(" sample.Robotd,sample.Crazy");
 		// RobotSpecification[] selectedRobots =
 		// engine.getLocalRepository(" sample.RobotLu, sample.Crazy");
 		// RobotSpecification[] selectedRobots =

@@ -11,6 +11,12 @@ public class NetWorkTest {
 		// input6 velocity of enemy
 		// input7 bearing of enemy
 
+		
+		//input0 heading of enemy
+		//input1 velocity of enemy
+		//input2 distance of enemy
+		//input3 heading of gun
+		
 		double input0, input1, input2, input3, input4, input5, input6, input7;
 		
 		int plus_mins=0;
@@ -25,8 +31,7 @@ public class NetWorkTest {
 				input6 = Math.random() * 8*(Math.random()>0.5?1:-1);
 				input7 = Math.random()*(Math.random()>0.5?1:-1) * Math.PI;
 			}
-			network.setInputs(input0, input1, input2, input3, input5,
-					input6, input7);
+			network.setInputs(input0, input1, input2, input3);
 
  			double trunradians = network.getOutput();
 

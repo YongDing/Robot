@@ -30,6 +30,7 @@ public class PSO {
 	String pack = "";
 	String name = "";
 	String trainpath = "";
+	String bulletpath="";
 
 	String content_fitness = "";
 
@@ -46,7 +47,12 @@ public class PSO {
 		this.robot = robot;
 		pack = robot.substring(0, robot.indexOf("."));
 		name = robot.substring(robot.indexOf(".") + 1, robot.length());
-
+		trainpath = "bin//" + pack + "//" + name
+				+ ".data//training_weights.dat";
+		
+		bulletpath = "bin//" + pack + "//" + name
+				+ ".data//bullets";
+		
 		operator = new FileOperator();
 
 		dimension = (Network.input_number + 1) * Network.hidden_number
@@ -70,8 +76,7 @@ public class PSO {
 	}
 
 	public void initialFile() throws IOException {
-		trainpath = "bin//" + pack + "//" + name
-				+ ".data//training_weights.dat";
+
 		FileWriter fw = new FileWriter(trainpath);
 		fw.write("");
 		fw.close();
@@ -142,16 +147,25 @@ public class PSO {
 		engine.close();
 	}
 
-	public int fitness(Particle c) throws IOException {
+//	public int fitness(Particle c) throws IOException {
+//		engine.runBattle(battleSpec, true); // waits till the battle finishes
+//		results = obsever.getResult();
+//		int sum = 0;
+//		for (robocode.BattleResults result : results.getSortedResults()) {
+//			if (result.getTeamLeaderName().equals(robot)) {
+//				sum += result.getBulletDamage();
+//			}
+//		}
+//		return sum / numberOfRounds;
+//	}
+	
+	public double fitness(Particle c) throws IOException {
+		int []result=new int[2];
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
-		int sum = 0;
-		for (robocode.BattleResults result : results.getSortedResults()) {
-			if (result.getTeamLeaderName().equals(robot)) {
-				sum += result.getBulletDamage();
-			}
-		}
-		return sum / numberOfRounds;
+		result=FileOperator.readCount(bulletpath);
+		return (double)result[1]/(result[0]+result[1]);
+		
 	}
 
 	public void run() throws IOException {
@@ -211,7 +225,7 @@ public class PSO {
 				population[i]
 						.writeFile(trainpath, population[i].generateText());
 
-				int x = fitness(population[i]);
+				double x = fitness(population[i]);
 				if (x > fitness(pbest[i])) {
 					pbest[i] = new Particle(population[i].getPosition());
 					if (x > fitness(gbest)) {
@@ -225,7 +239,7 @@ public class PSO {
 
 	public void print_pbest(int g) throws IOException {
 		content_fitness += "generation:" + g + "\n";
-		int fitness=0;
+		double fitness=0;
 		for (int i = 0; i < swarm_size; i++) {
 			fitness=fitness(population[i]);
 			content_fitness += fitness + "\n";
