@@ -33,6 +33,9 @@ public class PSO {
 	String bulletpath="";
 
 	String content_fitness = "";
+	
+	String allweights="";
+	String allweights_1="";
 
 	double[][] velocity;
 
@@ -96,6 +99,10 @@ public class PSO {
 			pbest[i] = new Particle(positions);
 		}
 		
+		allweights_1+="generation:" + c_generation + "\n";
+		allweights_1+=pbest[0].generateText();
+		pbest[0].writeFile("pbest", allweights_1);
+		
 
 		// initial gbest
 		gbest = new Particle(population[0].getPosition());
@@ -104,6 +111,9 @@ public class PSO {
 				gbest = new Particle(population[i].getPosition());
 			}
 		}
+		allweights+="generation:" + c_generation + "\n";
+		allweights+=gbest.generateText();
+		gbest.writeFile("gbest", allweights);
 		
 
 		// initial velocity of all particles
@@ -160,6 +170,7 @@ public class PSO {
 //	}
 	
 	public double fitness(Particle c) throws IOException {
+		c.writeFile(trainpath, c.generateText());
 		int []result=new int[2];
 		engine.runBattle(battleSpec, true); // waits till the battle finishes
 		results = obsever.getResult();
@@ -206,7 +217,6 @@ public class PSO {
 
 				
 				
-				
 				for (int j = 0; j < dimension; j++) {
 					if ((population[i].getPosition()[j] + velocity[i][j] < range_max && population[i]
 							.getPosition()[j] + velocity[i][j] > range_min)
@@ -222,8 +232,7 @@ public class PSO {
 				}
 				
 				population[i] = new Particle(new_positions);
-				population[i]
-						.writeFile(trainpath, population[i].generateText());
+
 
 				double x = fitness(population[i]);
 				if (x > fitness(pbest[i])) {
@@ -233,7 +242,14 @@ public class PSO {
 					}
 				}
 			}// end for
-			gbest.writeFile("gbest", gbest.generateText());
+			
+			allweights+="generation:" + c_generation + "\n";
+			allweights+=gbest.generateText();
+			gbest.writeFile("gbest", allweights);
+			
+			allweights_1+="generation:" + c_generation + "\n";
+			allweights_1+=pbest[0].generateText();
+			pbest[0].writeFile("pbest", allweights_1);
 		}// end while
 	}
 

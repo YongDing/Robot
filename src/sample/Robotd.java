@@ -54,6 +54,8 @@ public class Robotd extends AdvancedRobot {
 		setAdjustRadarForGunTurn(true);
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
+		
+		this.setBulletColor(Color.GREEN);
 
 		// ArrayList<Double> weights=new ArrayList<Double>();
 		// if (enemy.name != null) {
