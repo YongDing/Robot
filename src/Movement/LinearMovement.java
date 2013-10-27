@@ -12,8 +12,8 @@ public class LinearMovement extends Movement{
 	}
 	
 	public void move(){
-		bot.setAhead(200);
-		bot.setBack(200);
+		bot.ahead(200);
+		bot.back(200);
 	}
 
 }

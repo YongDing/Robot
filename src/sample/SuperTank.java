@@ -2,6 +2,10 @@ package sample;
 
 import java.awt.Color;
 import java.awt.event.InputEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +23,7 @@ import module.Skeleton;
 import module.Targeting;
 
 import robocode.AdvancedRobot;
+import robocode.BattleEndedEvent;
 import robocode.Bullet;
 import robocode.BulletHitBulletEvent;
 import robocode.BulletHitEvent;
@@ -30,6 +35,7 @@ import robocode.Event;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
+import robocode.RobocodeFileOutputStream;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.SkippedTurnEvent;
@@ -66,6 +72,7 @@ public class SuperTank extends AdvancedRobot{
 	public Movement movement;
 	public EnemySelector enemySelector;
 	public Targeting targeting;
+	public Chromosome gene;
 	
 	// The power of the next bullet
 	public double bulletPower;
@@ -85,6 +92,16 @@ public class SuperTank extends AdvancedRobot{
 	public List<Movement> movements = new ArrayList<Movement>();
 	public EnemySelector lastScanned;
 	
+	
+	public SuperTank(Chromosome gene) {
+		super();
+		this.gene = gene;
+	}
+	
+	public SuperTank() {
+		
+	}
+
 	protected void initialize() {
 		System.out.println("Initialising");
 		  
@@ -135,11 +152,56 @@ public class SuperTank extends AdvancedRobot{
 		movements.add(squareOffMovement);
 		movements.add(wallsMovement);
 		movements.add(stopMovement);
+		
+		readGene();
+	}
+	
+	public void readGene(){
+		String line = "";
+		try {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(
+						getDataFile("gene.dat")));
+				line = reader.readLine();
+				
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			// Something went wrong reading the file, reset to 0.
+		}
+		this.gene = new Chromosome(line);
+	}
+	
+	public double readFitness(){
+		String fitness = "";
+		try {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(
+						getDataFile("fitness.dat")));
+				fitness = reader.readLine();
+				
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			// Something went wrong reading the file, reset to 0.
+		}
+		return Double.parseDouble(fitness);
+	}
+	
+	public void writeFitness(){
+		
 	}
 	
 	protected void selectBehavior() {
 		System.out.println("Selecting");
-		Chromosome gene = Chromosome.generateRandom();
 //		NO_OF_MOVEMENT, NO_OF_GUN, NO_OF_RADAR, NO_OF_TARGETING
 		char[] strategies= gene.getGene().toCharArray();
 		for (int i = 0; i < strategies.length; i++) {
@@ -346,9 +408,11 @@ public class SuperTank extends AdvancedRobot{
 	public void onSkippedTurn(SkippedTurnEvent e) {
 		listenEvent(e);
 	}
-	public static void main(String[] args) {
-		SuperTank sTank = new SuperTank();
-		sTank.initialize();
-		sTank.selectBehavior();
-	}
+	
+	public void onBattleEnded(BattleEndedEvent event) {
+		double fitness = readFitness();
+		this.gene.setFitness(fitness);
+		
+    }
+
 }

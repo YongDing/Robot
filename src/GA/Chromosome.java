@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class Chromosome implements Comparable<Chromosome> {
         private final String gene;
-        private final int fitness;
+        private double fitness;
         
         public static final int NO_OF_MOVEMENT = 7;
         public static final int NO_OF_GUN = 5;
@@ -38,7 +38,7 @@ public class Chromosome implements Comparable<Chromosome> {
          */
         public Chromosome(String gene) {
                 this.gene    = gene;
-                this.fitness = calculateFitness(gene);
+                this.fitness = 0.0;
         }
         
         /**
@@ -57,30 +57,19 @@ public class Chromosome implements Comparable<Chromosome> {
          *
          * @return The fitness of this <code>Chromosome</code>.
          */
-        public int getFitness() {
-                return fitness;
-        }
-        
-        /**
-         * Helper method used to calculate the fitness for a given gene.  The
-         * fitness is defined as being the sum of the absolute value of the 
-         * difference between the current gene and the target gene.
-         * 
-         * @param gene The gene to calculate the fitness for.
-         * 
-         * @return The calculated fitness of the given gene.
-         */
-        private static int calculateFitness(String gene) {
-                int fitness = 0;
-                char[] arr  = gene.toCharArray();
-                for (int i = 0; i < arr.length; i++) {
-                        fitness += Math.abs(((int) arr[i]) - ((int) TARGET_GENE[i]));
-                }
-                
-                return fitness;
-        }
 
-        /**
+        
+        
+
+        public double getFitness() {
+			return fitness;
+		}
+
+		public void setFitness(double fitness) {
+			this.fitness = fitness;
+		}
+
+		/**
          * Method to generate a new <code>Chromosome</code> that is a random
          * mutation of this <code>Chromosome</code>.  This method randomly
          * selects one character in the <code>Chromosome</code>s gene, then
@@ -154,9 +143,9 @@ public class Chromosome implements Comparable<Chromosome> {
         @Override
         public int compareTo(Chromosome c) {
                 if (fitness < c.fitness) {
-                        return -1;
-                } else if (fitness > c.fitness) {
                         return 1;
+                } else if (fitness > c.fitness) {
+                        return -1;
                 }
                 
                 return 0;
@@ -185,9 +174,9 @@ public class Chromosome implements Comparable<Chromosome> {
         }
         
         public static void main(String[] args) {
-        	Chromosome gene1 = Chromosome.generateRandom();
-        	System.out.println(gene1.getGene());
- 
+//        	Chromosome gene1 = Chromosome.generateRandom();
+//        	System.out.println(gene1.getGene());
+        	System.out.println((double)1/3);
         	
         }
 }
