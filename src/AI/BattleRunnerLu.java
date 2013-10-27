@@ -1,8 +1,11 @@
 package AI;
 
 import java.awt.Robot;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import File.FileOperator;
 import GA.Chromosome;
@@ -41,7 +44,7 @@ public class BattleRunnerLu {
 		engine.addBattleListener(obsever);
 
 		// Show the Robocode battle view
-		engine.setVisible(true);
+		engine.setVisible(false);
 		// Setup the battle specification
 
 		int numberOfRounds = 10;
@@ -86,6 +89,7 @@ public class BattleRunnerLu {
         for (int i = 0; i < pop.getPopulation().length; i++) {
 			Chromosome geneChromosome = pop.getPopulation()[i];
 			String gene = geneChromosome.getGene();
+//			NO_OF_MOVEMENT, NO_OF_GUN, NO_OF_RADAR, NO_OF_TARGETING
 			fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", gene);
 			// Run our specified battle and let it run till it is over
 			engine.runBattle(battleSpec, true); // waits till the battle finishes
@@ -103,7 +107,7 @@ public class BattleRunnerLu {
 			}
 			
 			fitness =(double) myScore/(myScore + enemyScore);
-			fOperator.writeFile("bin/sample/"+ shortTankName+".data/fitness.dat", ""+fitness);
+//			fOperator.writeFile("bin/sample/"+ shortTankName+".data/fitness.dat", ""+fitness);
 			pop.getPopulation()[i].setFitness(fitness);
 			geneChromosome.setFitness(fitness);
 		}
@@ -118,12 +122,25 @@ public class BattleRunnerLu {
                 pop.evolve();
                 best = pop.getPopulation()[0];
                 System.out.println("Generation " + i + ": " + best.getGene() + " Fitness => " + best.getFitness());
+                try {
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("best_gene_results", true)));
+                    out.println(best.getGene());
+                    out.close();
+                } catch (IOException e) {
+                   
+                }
                 
                 for (int j = 0; j < pop.getPopulation().length; j++) {
         			Chromosome geneChromosome = pop.getPopulation()[j];
         			String gene = geneChromosome.getGene();
         			fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", gene);
         			// Run our specified battle and let it run till it is over
+//        			if (j == 0) {
+//        				engine.setVisible(true);
+//					}
+//        			else {
+//        				engine.setVisible(false);
+//					}
         			engine.runBattle(battleSpec, true); // waits till the battle finishes
         			int myScore = 0, enemyScore = 0;
         			double fitness = 0.0;
@@ -139,7 +156,7 @@ public class BattleRunnerLu {
         			}
         			
         			fitness =(double) myScore/(myScore + enemyScore);
-        			fOperator.writeFile("bin/sample/"+ shortTankName+".data/fitness.dat", ""+fitness);
+//        			fOperator.writeFile("bin/sample/"+ shortTankName+".data/fitness.dat", ""+fitness);
         			pop.getPopulation()[j].setFitness(fitness);
         			geneChromosome.setFitness(fitness);
         		}

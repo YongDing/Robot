@@ -1,6 +1,7 @@
 package sample;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -248,7 +249,11 @@ public class SuperTank extends AdvancedRobot{
 		this.setColors(Color.red, Color.blue, Color.yellow, Color.black,
 				Color.green);
 		turnRadarRightRadians(2 * Math.PI);
-		
+		System.out.println("Gene:" + this.gene.getGene());
+		System.out.println(movement.getClass());
+		System.out.println(gun.getClass());
+		System.out.println(radar.getClass());
+		System.out.println(targeting.getClass());
 		while (true) {
 			if(enemy!=null){
 			this.updateEnemyBullets();
@@ -414,5 +419,15 @@ public class SuperTank extends AdvancedRobot{
 		this.gene.setFitness(fitness);
 		
     }
+	public void onPaint(Graphics2D g) {
+		g.setColor(Color.WHITE);
+		g.drawString("      0: All      1: SelectEnemy      2: Radar      3: Gun      4: Targeting      5: Movement",
+						15, 15);
+		enemySelector.onPaint(g);
+		radar.onPaint(g);
+		gun.onPaint(g);
+		targeting.onPaint(g);
+		movement.onPaint(g);
+	}
 
 }

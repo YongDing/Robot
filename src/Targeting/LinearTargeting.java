@@ -24,7 +24,6 @@ public class LinearTargeting extends Targeting{
 		double enemyHeading = bot.enemy.headingRadians;
 		double enemyVelocity = bot.enemy.velocity;
 		 
-		 
 		double deltaTime = 0;
 		double battleFieldHeight = bot.getBattleFieldHeight(), 
 		       battleFieldWidth = bot.getBattleFieldWidth();
