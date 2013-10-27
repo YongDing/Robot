@@ -1,6 +1,7 @@
 package ANN;
 
 import java.io.File;
+import java.io.IOException;
 
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
@@ -15,11 +16,13 @@ import sample.Robotd;
 import AI.BattleObserver;
 import File.FileOperator;
 
-public class Test {
-	public static void main(String[] args) {
+public class Result {
+	public static void main(String[] args) throws IOException {
 		Robotd robot = new Robotd();
 		RobotTest robott = new RobotTest();
 		BattleCompletedEvent result;
+		
+		String result_text=FileOperator.readResult();
 		// Disable log messages from Robocode
 		RobocodeEngine.setLogMessagesEnabled(false);
 		// Create the RobocodeEngine
@@ -31,9 +34,14 @@ public class Test {
 		// Add our own battle listener to the RobocodeEngine
 		BattleObserver obsever = new BattleObserver();
 		engine.addBattleListener(obsever);
-				
-				
-				
+		
+		String[] words = result_text.split("\n");
+		int count = 0;
+		for (int i = 0; i < words.length; i++) {
+			if (words[i] != null && words[i].length() > 0) {
+				count++;
+			}
+		}
 				
 
 		// Show the Robocode battle view
@@ -55,9 +63,25 @@ public class Test {
 		BattleSpecification battleSpec = new BattleSpecification(
 				numberOfRounds, battlefield, selectedRobots);
 
+		String path="bin//" + "sample" + "//" + "Robotd"
+				+ ".data//training_weights.dat";
+		
+		int index=0;
+		while(count>0){
+			String temp="";
+			System.out.println(words[index]);
+			for(int i=1;i<24;i++){
+				temp+=words[i+index]+"\n";
+			}
+			System.out.println(temp);
+			FileOperator.writeResult(path, temp);
+			engine.runBattle(battleSpec, true); // waits till the battle finishes
+			result = obsever.getResult();
+			count-=24;
+			index+=24;
+		}
 		// Run our specified battle and let it run till it is over
-		engine.runBattle(battleSpec, true); // waits till the battle finishes
-		result = obsever.getResult();
+		
 
 		// engine.runBattle(battleSpec, true); // waits till the battle finishes
 		// Cleanup our RobocodeEngine

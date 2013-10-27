@@ -34,20 +34,49 @@ public class FileOperator {
 		is.close();
 		return buffer.toString();
 	}
-	
-	
-	public static int[] readCount(String path){
-		int[] result=new int[2];
+
+	public static int[] readCount(String path) {
+		int[] result = new int[2];
 		try {
 			BufferedReader reader = null;
 			try {
-				File file=new File(path);
-				// Read file "count.dat" which contains 2 lines, a round count, and a battle count
+				File file = new File(path);
+				// Read file "count.dat" which contains 2 lines, a round count,
+				// and a battle count
 				reader = new BufferedReader(new FileReader(file));
 
 				// Try to get the counts
 				result[0] = Integer.parseInt(reader.readLine());
 				result[1] = Integer.parseInt(reader.readLine());
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			// Something went wrong reading the file, reset to 0.
+		} catch (NumberFormatException e) {
+			// Something went wrong converting to ints, reset to 0
+		}
+		return result;
+	}
+
+	public static String readResult() {
+		String result = "";
+		String line;
+		try {
+			BufferedReader reader = null;
+			try {
+				File file = new File("pbest");
+				// Read file "count.dat" which contains 2 lines, a round count,
+				// and a battle count
+				reader = new BufferedReader(new FileReader(file));
+				line = reader.readLine();
+				// Try to get the counts
+				while (line != null) {
+					result += line + "\n";
+					line = reader.readLine();
+				}
 			} finally {
 				if (reader != null) {
 					reader.close();
@@ -67,6 +96,23 @@ public class FileOperator {
 		fw.close();
 	}
 
+	public static void writeResult(String filePath, String content)
+			throws IOException {
+		try {
+			FileWriter fw = new FileWriter(filePath);
+			try {
+				fw.write(content);
+			} catch (IOException e) {
+
+			} finally {
+				fw.close();
+			}
+		} catch (Exception e) {
+
+		}
+
+	}
+
 	public void writeFitness(String content) {
 		String file = "fitness";
 		try {
@@ -74,13 +120,13 @@ public class FileOperator {
 					new FileInputStream(file)));
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(file)));
-			String text="";
+			String text = "";
 			String str;
 			while ((str = br.readLine()) != null) {
-				text+=str;
-				text+="\n";
+				text += str;
+				text += "\n";
 			}
-			text+=content;
+			text += content;
 			bw.write(text);
 			br.close();
 			bw.close();

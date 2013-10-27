@@ -19,12 +19,16 @@ public class RobotY extends AdvancedRobot
         setTurnRadarRightRadians(2 * PI);
                 while(true){
                         
-                        this.setTurnGunRight(360);
+                	this.ahead(200);
+                	this.back(200);
+                	
+
+//                        this.setTurnGunRight(360);
+//                        this.execute();
+//                     
+//                        this.turnGunLeft(360);
                         
-                        this.execute();
-                        this.setTurnGunLeft(360);
-                        
-                        this.execute();
+//                        this.exsecute();
 //                        turnGunLeft(360);
 //                        
 //                        turnGunLeft(this.getGunTurnRemaining()+10);

@@ -11,7 +11,7 @@ public class MainAPP {
 		Robotd robot=new Robotd();
 		
 		
-		PSO pso=new PSO("sample.Robotd","sample.Crazy");
+		PSO pso=new PSO("sample.Robotd","sample.RobotTest");
 		System.out.println("cleaning data");
 		pso.initialFile();
 		System.out.println("set robocode environment");
