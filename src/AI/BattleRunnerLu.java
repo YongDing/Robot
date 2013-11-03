@@ -125,7 +125,6 @@ public class BattleRunnerLu {
                 System.out.println("Generation " + i + ": " + best.getGene() + " Fitness => " + best.getFitness());
                 try {
                     PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("best_gene_results", true)));
-                    out.println("Generation " + i + ": " + best.getGene() + " Fitness => " + best.getFitness());
                     out.println(best.getGene());
                     out.close();
                 } catch (IOException e) {
