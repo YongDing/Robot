@@ -29,7 +29,7 @@ public class BattleRunnerAfterTrainning {
 		// Create the RobocodeEngine
 		// RobocodeEngine engine = new RobocodeEngine(); // Run from current
 		// working directory
-		RobocodeEngine engine = new RobocodeEngine(new File("/Users/xiaoyilu/robocode"));
+		RobocodeEngine engine = new RobocodeEngine(new File("/Users/showyilv/robocode"));
 //		RobocodeEngine engine = new RobocodeEngine(new File("C:/robocode"));
 		// Add our own battle listener to the RobocodeEngine
 		BattleObserver obsever = new BattleObserver();
@@ -74,18 +74,18 @@ public class BattleRunnerAfterTrainning {
         // some simple reporting.
         long startTime = System.currentTimeMillis();
         
-//        String file = "best_gene_results_2";
-//        BufferedReader br = new BufferedReader(new FileReader(file));
-//        String line;
-//        while ((line = br.readLine()) != null) {
-//        	System.out.println(line);
-//        	fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", line);
-//        	engine.runBattle(battleSpec, true);
-//        }
-//        br.close();
-        String geneString = "1413";
-        fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", geneString);
-        engine.runBattle(battleSpec, true);
+        String file = "best_gene_results_4";
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = br.readLine()) != null) {
+        	System.out.println(line);
+        	fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", line);
+        	engine.runBattle(battleSpec, true);
+        }
+        br.close();
+//        String geneString = "1413";
+//        fOperator.writeFile("bin/sample/"+ shortTankName+".data/gene.dat", geneString);
+//        engine.runBattle(battleSpec, true);
         
         		
        
